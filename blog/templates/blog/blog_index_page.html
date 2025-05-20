@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags %}
+{% load wagtailimages_tags %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/blog_index_page.css' %}">
+  <div class="container">
+    <div class="summary">
+      <h2>Scrollは、HAGAKUREプログラミング塾の参加者が運営するブログサイトです。</h2>
+    </div>
+    <div class="wrapper">
+      {% for article in blogpages %}
+      <article class="article">
+        <div class="article_wrapper">
+          <a href="{{ article.url }}">
+            <div class="article_img_wrapper">
+            {% with article.thumbnail as article_img %}
+              {% if article_img %}
+                {% image article_img original class="article_img" %}
+              {% else %}
+                <img class="article_img" src="{% static 'images/blog_index_page/article_no_img.png' %}" alt="デフォルト記事画像">
+              {% endif %}
+            {% endwith %}
+          </div>
+          </a>
+          <a href="{{ article.url }}">
+            <h3 class="article_title">{{ article.title }}</h3>
+          </a>
+          <time datetime="{{ article.date|date:'Y-m-d' }}">{{ article.date|date:"Y年n月j日" }}</time>
+          <div class="article_contributor">
+            {% if article.owner %}
+              {% if article.owner.wagtail_userprofile.avatar %}
+                <img src="{{ article.owner.wagtail_userprofile.avatar.url }}" alt="{{ article.owner.get_full_name }}">
+              {% else %}
+                <img src="{% static 'images/blog_index_page/user_img.png' %}" alt="デフォルトアイコン">
+              {% endif %}
+            {% endif %}
+            <p>{{ article.owner.get_full_name|default:article.owner.username }}</p>
+          </div>
+          <div class="article_other">
+            <div class="article_like">
+              {% csrf_token %}
+              <button class="likeButton" data-page-id="{{ article.id }}">
+                <svg width="53" height="51" viewBox="0 0 53 51" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M33.925 10C31.054 10 28.2985 11.3684 26.5 13.5308C24.7015 11.3684 21.946 10 19.075 10C13.993 10 10 14.0883 10 19.2916C10 25.6774 15.61 30.8807 24.1075 38.7869L26.5 41L28.8925 38.77C37.39 30.8807 43 25.6774 43 19.2916C43 14.0883 39.007 10 33.925 10ZM26.665 36.2698L26.5 36.4387L26.335 36.2698C18.481 28.9886 13.3 24.1738 13.3 19.2916C13.3 15.9128 15.775 13.3787 19.075 13.3787C21.616 13.3787 24.091 15.0512 24.9655 17.3657H28.051C28.909 15.0512 31.384 13.3787 33.925 13.3787C37.225 13.3787 39.7 15.9128 39.7 19.2916C39.7 24.1738 34.519 28.9886 26.665 36.2698Z"
+                    fill="#FB737D" />
+                </svg>
+              </button>
+              <span id="likeCount">{{ article.get_like_count }}</span>
+            </div>
+            <div class="article_category">
+              <ul>
+                {% for tag in article.tags.all %}
+                <li><a href="{% pageurl page %}?tag={{ tag }}">{{ tag }}</a></li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+      <div class="page">
+        {% if blogpages.has_previous %}
+          <a class="page-prev" href="?page={{ blogpages.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}">前のページへ</a>
+        {% endif %}
+        {% for i in blogpages.paginator.page_range %}
+          {% if blogpages.number == i %}
+            <span class="current">{{ i }}</span>
+          {% else %}
+            <a class="page-number" href="?page={{ i }}{% if search_query %}&q={{ search_query }}{% endif %}">{{ i }}</a>
+          {% endif %}
+        {% endfor %}
+
+        {% if blogpages.has_next %}
+          <a class="page-next" href="?page={{ blogpages.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}">次のページへ</a>
+        {% endif %}
+      </div>
+  </div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/blog_index_page.js' %}"></script>
+{% endblock %}

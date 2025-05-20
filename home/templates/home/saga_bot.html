@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ja">
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    
+    {% load static %}
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WLK68MXV');</script>
+<!-- End Google Tag Manager -->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PQMQ82P18K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PQMQ82P18K');
+</script>
+    <title></title>  
+    <style>
+      html,body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #efeded;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #message-container {
+        width: 80%;
+        max-width: 700px;
+        height: auto;
+        margin: auto;
+        margin-top: 1.2rem;
+        margin-bottom: 0rem;
+        padding: 1rem;
+        background-color:  #dfdfdf;
+        border-radius: 15px;
+        box-shadow: 0px 10px 20px -5px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        font-weight:bold;
+        /* color: #37a15c; */
+        text-align: center;
+        font-size: 1.4em;
+        /* margin-bottom: 1rem; */
+      }
+      #message-box {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        height: 280px;
+        overflow-y: auto;
+        /* padding: 1rem; */
+        border: 1px solid #e0e0e0;
+        border-radius: 10px;
+        /* margin-bottom: 1rem; */
+      }
+      .message {
+        /* background-color: #f5f5f5;
+        color: #333; */
+        background-color: #F5F5F5;
+        color: #000000;
+        margin-left: 0.2rem;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 20px;
+        max-width: 70%;
+      }
+
+      .bot-message {
+      font-size: 1rem;
+      position: relative;
+      background-color: #16ABD1;
+      border-radius: 20px;
+      color: #F5F5F5;
+      padding: 10px; /* 左側に画像のためのスペースを増やす */
+      display: flex;
+      align-items: center;
+      margin-left: 40px; /* 左側に30pxのマージンを追加 */
+      margin-right: auto; /* 右端に寄せる */
+      max-width: 360px; /* 吹き出しの最大幅を設定 */
+    }
+
+    .bot-message::before {
+      content: '';
+      position: absolute;
+      left: 10px; /* 吹き出しの尾の位置を調整 */
+      top: 100%;
+      width: 0;
+      height: 0;
+      border: 10px solid transparent;
+      border-right-color: #16ABD1; /* 吹き出しの色 */
+      border-top-width: 13px; /* 上のボーダーの幅を増やす（高さを調整） */
+      transform: translateY(-50%) rotate(200deg); /* Y軸に沿って移動し、角度を調整 */
+    }
+
+    .user-message {
+    font-size: 1rem;
+    position: relative;
+    background-color: #F5F5F5;
+    border-radius: 20px;
+    padding: 10px;
+    color: #000000;
+    margin-left: auto; /* 右端に寄せる */
+    margin-right: 20px; /* 右側に20pxのマージンを追加 */
+    max-width: 380px; /* 吹き出しの最大幅を設定 */
+  }
+
+    /* 吹き出し△ */
+    .user-message::after {
+      content: '';
+      position: absolute;
+      right: 10px; /* 吹き出し位置 */
+      top: 100%;
+      width: 0;
+      height: 0;
+      border: 15px solid transparent;
+      border-left-color: #F5F5F5; /* 吹き出しの色 */
+      border-top-width: 14px; /* 三角形高さを調整 */
+      transform: translateY(-50%) rotate(162deg); /* 角度を調整 */
+    }
+    /* お侍画像 */
+    .bot-character {
+      width: 130px;  /* より大きなサイズに設定 */
+      height: 100px; /* より大きなサイズに設定 */
+      position: absolute;
+      left: -72px;  /* 画像を適切な位置に設定 */
+      bottom: -104px; /* 画像を適切な位置に設定 */
+      filter: hue-rotate(180deg) saturate(100%) brightness(50%);
+    }
+
+      form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      #user-input {
+      width: 100%;
+      min-height: 40px;
+      padding: 0.5rem;
+      font-size: 1rem;
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      background-color: #F5F5F5;
+      margin-right: 1rem;
+      transition: 0.2s ease;
+      resize: none;
+      }
+      #user-input:focus {
+        outline: none;
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+      }
+      button[type="submit"] {
+      width: 100px;
+      height: 40px;
+      border: none;
+      border-radius: 20px;
+      /* background-color: 	#ede550; */
+      background-color: #16ABD1;
+      color: #F5F5F5;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: 0.2s ease;
+      margin-top: 1rem;
+      }
+      button[type="submit"]:hover {
+        /* background-color: #b9b11a; */
+        background-color: #157f9a;
+      }
+      .container {
+        text-align: center;
+        margin-top: 1rem;
+        /* margin-bottom: 60px; */
+      }
+      a {
+        color: #3f51b5;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+      }
+    </style>
+
+  </head>
+  
+  <body>
+    <header class="wrapper_hp">
+      <nav class="navbar navbar-expand-sm navbar-light">
+        <div class="container-fluid">
+          <!-- Django用にURL修正 -->
+          <a class="navbar-brand" href="/">
+            <img src="{% static 'images/logo.png' %}" alt="hagakure_logo" width="30">
+          </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse text-right" id="navbarSupportedContent">
+              <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                  <!-- Django用にURL修正 -->
+                  <a class="nav-link" aria-current="page" href="/">ホーム</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'voice' %}">塾生の声</a>
+                </li>
+                <!-- Hagakure検定ページ追加 -->
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'saga_bot' %}">佐賀弁bot</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="https://forms.gle/N8ipEt2RFSs8bt4a9">参加フォーム</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="https://www.facebook.com/102157125979726">FB</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'term_use' %}">参加規約</a>
+                </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+</header>
+    <div id="message-container">
+      <h1>Transformer SAGA</h1>
+      <div id="message-box">
+        {% for message in messages %}
+          <div class="message {{ message.sender }}-message">
+            {% if message.sender == 'bot' %}
+              <img class="bot-character" src="{% static 'images/hagakure_samurai_1.png' %}" alt="Bot Character" />
+            {% endif %}
+            {{ message.text }}
+          </div>
+        {% endfor %}
+      </div>      
+     <p>100文字中あと <span id="remaining-characters"></span>文字までよかよ。</p>
+      <form method="post" action="{% url 'trans_sagaben' %}">{% csrf_token %}
+      <!-- <form method="post" action="{% url 'trans_sagaben' %}"> -->
+        <textarea placeholder="標準語ば入力して変換ば押してくれ。" name="message" id="user-input" oninput="limitTextLength();" rows="1"></textarea>
+        <button type="submit">変換</button>
+      </form>
+    </div>
+    <div class="container">
+      <a href="{% url 'indext5explain' %}">モデルの説明</a>
+    </div>
+    <footer>
+      <div class="wrapper_hp footer">
+        <div class="footer_border"></div>
+        <p><small>&copy;HAGAKURE PROGRAMMING塾 since2022</small></p>
+        <img class="footer_logo" src="{% static 'images/footer_logo.png' %}" alt="samurai_and_ninja">
+      </div>
+    </footer>
+    
+    <script>
+      const user_message = "{{ user_message }}";
+      const message = "{{ message }}";
+      if (user_message) {
+        displayMessage(user_message, "user");
+      }
+      if (message) {
+        displayMessage(message, "bot");
+      }
+    
+      function displayMessage(message, sender) {
+        const messageBox = document.getElementById("message-box");
+        const messageElement = document.createElement("div");
+        messageElement.innerText = message;
+        messageElement.classList.add("message");
+        messageElement.classList.add(sender === "bot" ? "bot-message" : "user-message");
+        messageBox.appendChild(messageElement);
+        messageBox.scrollTop = messageBox.scrollHeight;
+      }
+    
+      function sendMessage() {
+        const userInput = document.getElementById("user-input");
+        const message = userInput.value;
+        displayMessage(message, "user");
+        userInput.value = "";
+        return true;
+      }
+    
+      // 文字数制限
+      const limitTextLength = () => {
+        let maxLength = 100;
+        let enteredCharacters = document.getElementById('user-input');
+        let remainingCharacters = document.getElementById('remaining-characters');
+        if (enteredCharacters.value.length > maxLength) {
+          enteredCharacters.value = enteredCharacters.value.substr(0, maxLength);
+          remainingCharacters.classList.add('max');
+        } else {
+          remainingCharacters.classList.remove('max');
+        }
+        remainingCharacters.textContent = maxLength - enteredCharacters.value.length;
+      };
+    
+      // ページロード時に残り文字数を初期設定
+      document.addEventListener('DOMContentLoaded', () => {
+        limitTextLength();
+      });
+    </script>    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="js/window.js"></script> -->
+  </body>
+</html>

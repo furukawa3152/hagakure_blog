@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ja">
+<html>
+  <head>
+    {% load static %}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>トランスフォーマー・サガ</title>  
+    <style>
+      body {
+        font-family: 'Roboto', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #efeded;
+      }
+      #message-container {
+        width: 80%;
+        max-width: 700px;
+        height: auto;
+        margin: auto;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        padding: 1rem;
+        background-color:  #ffffff;
+        border-radius: 15px;
+        box-shadow: 0px 10px 20px -5px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        text-align: center;
+        font-size: 1.5em;
+      }
+      b {
+        font-size: 1.2rem;
+        /* color: #44b06a; */
+      }
+      #image-container {
+        display: flex;
+      }
+      .image-box-transformer, .image-box-t5 {
+        text-align: center; /* テキストを中央揃えに */
+        margin-bottom: 20px; /* 画像の下にスペースを作る */
+    }
+    .image-box-transformer img, .image-box-t5 img {
+        display: block; /* 画像をブロック要素にする */
+        margin: 0 auto; /* 画像を中央揃えに */
+    }
+    </style>
+  </head>
+  
+  <body>
+    <div id="message-container">
+      <h1>モデルの説明</h1>
+      <b>T5（Text-to-Text Transfer Transformer）</b>
+      <p>
+        テキストからテキストに変換するモデルです。<br>
+        「文書の要約」「外国語翻訳」「文書の分類」などのタスクが行えます。<br>
+        外国語翻訳にヒントを得て方言に変換するモデルを考えました。</br>
+        T5はChatGPTの基盤となっているTransformerのアーキテクチャが使われています。
+      </p>
+      <div class="image-container">
+        <div class="image-box-transformer">
+            <img src="{% static 'images/transformer.jpg' %}" height="350" alt="transformer">
+            Transformer
+        </div>
+        <div class="image-box-t5">
+            <img src="{% static 'images/t5.png' %}" height="160" alt="t5">
+            T5
+        </div>
+      </div>
+      <p>
+        Huggingfaceで公開されているT5事前学習済みモデルをお借りしました。<br>
+        学習データを作成して事前学習済みモデルをファインチューニングしています。</br>
+      </p>
+      <p>事前学習モデル</p>
+      <ul>
+        <li><a href="https://huggingface.co/sonoisa/t5-base-japanese-v1.1">sonoisa/t5-base-japanese-v1.1</a>
+      </ul>
+      <p>学習データ参考</p>
+      <ul>
+        <li><a href="http://mon-hikara.travel.coocan.jp/">今日の佐賀弁</a>
+        <li><a href="https://www.8toch.net/translate/?lang=sg">恋する方言変換</a>
+        <li><a href="https://openai.com/blog/chatgpt">ChatGPT</a>
+      </ul>
+      <p>※低スペックのリソースで動いているので処理速度はご愛敬でお願いします。</p>
+    </div>
+    <div class="container">
+      <a href="/">戻る</a>
+    </div>
+  </body>
+</html>

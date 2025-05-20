@@ -1,0 +1,104 @@
+/* 背景設定 */
+body {
+    background-color: #E3F4E1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* ログインエリアのスタイル */
+.login-container {
+    background-color: #FFFFFF;
+    width: 80%;
+    max-width: 368px;
+    height: 75%;
+    max-height: 420px;
+    border-radius: 20px;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 16px;
+    gap: 16px;
+}
+
+/* 各画像のサイズ調整と間隔調整（均等配置） */
+.login-container img[alt="Scroll_ロゴ"] {
+    width: 82.4%;
+    max-width: 303.51px;
+    height: auto;
+    margin-bottom: 16px;
+}
+
+.login-container img[alt="HAGAKURE_ロゴ"] {
+    width: 90%;
+    max-width: 89.5px;
+    height: auto;
+    position: relative;
+    margin-bottom: 16px;
+}
+
+/* 💬 form 自体はリセット */
+.google-login-form {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 0;
+}
+
+/* Googleログインボタンのスタイル */
+.google-login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #6AC15D;
+    border: none;
+    border-radius: 40px;
+    width: 82.4%;
+    max-width: 280.16px;
+    height: 49.44px; /* 💬 ボタン高さ固定 */
+    cursor: pointer;
+    font-size: 19px;
+    font-weight: 500;
+    color: #FBF6F4;
+    font-family: 'Zen Maru Gothic', sans-serif;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1), 0px 4px 6px rgba(0, 0, 0, 0.15);
+    margin-top: 16px;
+    letter-spacing: 1px;
+    padding: 0 20px; /* 💬 padding左右だけ */
+    text-decoration: none;
+    border: none;
+    outline: none;
+}
+
+/* Googleアイコンの調整 */
+.google-login img.google-icon {
+    margin-right: 16px; /* 左右の余白を均等に調整 */
+    width: 25x;
+    height: 25px;
+}
+
+@media (max-width: 480px) {
+    .login-container {
+        width: 90%;
+        max-width: 250px;
+        height: auto;
+        padding: 24px 12px;
+        gap: 12px;
+    }
+
+    .google-login {
+        font-size: 13px;
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .google-login img.google-icon {
+        margin-right: 8px;
+        width: 15px;
+        height: 15px;
+    }
+}

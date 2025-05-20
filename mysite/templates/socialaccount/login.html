@@ -1,0 +1,30 @@
+{% load static %}
+{% load account socialaccount %}
+
+{% provider_login_url 'google' process='login' as google_url %}
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scrollログイン</title>
+  <link rel="stylesheet" href="{% static 'css/login.css' %}" />
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+  <div class="login-container">
+    <img src="{% static 'image/blog_login/scroll_logo.png' %}" alt="Scroll_ロゴ" class="logo" />
+    <img src="{% static 'image/blog_login/hagakure_logo.png' %}" alt="HAGAKURE_ロゴ" class="logo" />
+
+    <form action="{{ google_url }}" method="post" class="google-login-form">
+      {% csrf_token %}
+      <button type="submit" class="google-login">
+        <img src="{% static 'image/blog_login/Google.png' %}" alt="Googleアイコン" class="google-icon" />
+        Googleでログイン
+      </button>
+    </form>
+  </div>
+</body>
+</html>

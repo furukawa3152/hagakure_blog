@@ -1,0 +1,318 @@
+@charset "UTF-8";
+
+/* 全体　*/
+body {
+    background-color: #FEFBF6;
+    font-family: "zen Maru Gothic", "Yu Gothic", "Hiragino kaku Gothic",sans-serif;
+    color: #625651;
+}
+
+.wrapper {
+    margin: 0 auto;
+    padding: 0 10px;
+    max-width: 1040px;
+}
+
+/* 大見出し */
+h1 {
+    font-size: 56px;
+    margin-top: 100px;
+    text-align: center;
+}
+
+/* Scrollとは */
+.summary {
+    margin: 50px 100px auto 0; 
+    width: 1000px;
+    text-align: left;
+    font-size: 20px;
+}
+
+/* 2つの巻物の並べ方 */
+article{
+    display: flex;
+    flex-direction: column;
+}
+
+/* 読み手向け */
+.makimono{
+    background: url("/static/image/guidelines/article_bg.png") repeat;
+    background-size: 25%;
+    max-width: 100%;
+    width: 60%;
+    padding: 30px;
+    margin: 100px auto;
+    border-radius: 32px 32px 0 0;
+    position: relative;
+}
+
+/* 書き手向け */
+.y-makimono{
+    background: url("/static/image/guidelines/article_bg_yellow.png") repeat;
+    background-size: 25%;
+    max-width: 100%;
+    width: 60%;
+    padding: 30px;
+    margin: 100px auto;
+    border-radius: 32px 32px 0 0;
+    position: relative;
+}
+
+.makimono::before,
+.makimono::after,
+.y-makimono::before,
+.y-makimono::after{
+    position: absolute;
+    content: "";
+}
+
+/* 巻物ひも */
+.makimono::before,
+.y-makimono::before{
+    background: url("/static/image/guidelines/string.png") no-repeat;
+    width: 269px;
+    height: 85px;
+    top: -75px;
+    left: 45%;
+    z-index: -1;
+}
+
+/* 巻物まきまき */
+.makimono::after{
+    background: url("/static/image/guidelines/makimaki_x4.png") no-repeat;
+    width: 106.5%;
+    height: 55px;
+    background-size: contain;
+    margin:10px 0;
+    display: block;
+    left:-19px;
+    z-index: 10;
+}
+
+/* 巻物まきまきー黄色 */
+.y-makimono::after{
+    background: url("/static/image/guidelines/makimaki_yellow.png") no-repeat;
+    width: 106.5%;
+    height: 55px;
+    background-size: contain;
+    margin:10px 0;
+    display: block;
+    left:-19px;
+    z-index: 10;
+}
+
+/* 巻物背景　白 */
+.yomite,
+.kakite {
+    padding: 30px;
+    background: #fff;
+    border-radius: 16px;
+}
+
+
+/* 巻物記事内容 */
+h3{
+    text-align: center;
+    width: 75%;
+    height: 50px;
+    line-height: 50px;
+    margin: 30px auto;
+    border-radius: 16px;
+    font-size: 24px;
+    position: relative; /* 疑似要素の基準位置をh3要素にするため */
+    padding: 0 20px; /* 丸い装飾と文字の間にスペースを作るため */
+}
+
+.yomite h3{
+    background: #6AC15D;
+}
+
+.kakite h3{
+    background: #F4E767;
+}
+
+h3::before,
+h3::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%); /* 垂直方向中央揃え */
+    width: 16px; /* 丸の幅 */
+    height: 16px; /* 丸の高さ */
+    background-color: #EDCF3B; /* 丸の色 */
+    border-radius: 50%; /* 丸にする */
+}
+
+.yomite h3::before,
+.yomite h3::after {
+    background-color: #EDCF3B; /* 丸の色 */
+}
+
+.kakite h3::before,
+.kakite h3::after {
+    background-color: #625651; /* 丸の色 */
+}
+
+h3::before {
+    left: 10px;
+}
+
+h3::after {
+    right: 10px;
+}
+
+.yomite .midashi{
+    font-size: 20px;
+    background: linear-gradient(transparent 70%, rgba(106, 193, 93, 0.5) 70%);
+}
+
+.kakite .midashi{
+    font-size: 20px;
+    background: linear-gradient(transparent 70%, rgba(244, 231, 103, 0.5) 70%);
+}
+
+ul{
+    padding-left: 30px;
+}
+
+ul li{
+    font-size: 18px;
+}
+
+/* 注意事項 */
+.attention{
+    font-size: 18px;
+}
+
+/* --------------------レスポンシブ対応---------------------------- */
+/* タブレット */
+@media screen and (max-width: 700px) {
+
+.wrapper {
+    padding: 0 20px;
+}
+
+/* Scrollとは ースマホ1 */
+.summary{
+    font-size:20px;
+}
+
+.makimono,
+.y-makimono{
+    width: 100%;
+    padding: 20px;
+}
+
+/* 巻物ひもータブレット */
+.makimono::before,
+.y-makimono::before,{
+    width:250px;
+    background-size:contain;
+    top: -70px;
+    left: 10％;
+}
+
+/* 大見出しータブレット*/
+h1 {
+    font-size: 48px;
+}
+}
+
+/* --------------------レスポンシブ対応2---------------------------- */
+/* スマホ1 */
+@media screen and (max-width: 470px) {
+
+.wrapper {
+    padding: 0 20px;
+}
+
+/* Scrollとは ースマホ1 */
+.summary{
+    font-size:16px;
+}
+
+/* 読者向け ースマホ1 */
+.makimono,
+.y-makimono{
+    width: 100%;
+    padding: 20px;
+}
+
+/* 巻物ひもースマホ1 */
+.makimono::before,
+.y-makimono::before {
+    width:200px;
+    background-size: contain;
+    top: -55px;
+    left: 160px;
+}
+
+/*巻物まきまきースマホ1　*/
+.makimono::after,
+.y-makimono::after{
+  left: -15px;
+  z-index: 10;
+}
+
+/* 大見出しースマホ1*/
+h1 {
+    font-size: 36px;
+}
+
+h3::before,
+h3::after {
+    width: 8px; /* 丸の幅 */
+    height: 8px; /* 丸の高さ */
+}
+}
+
+/* --------------------レスポンシブ対応3---------------------------- */
+/* スマホ2 */
+@media screen and (max-width: 375px) {
+
+/* Scrollとは ースマホ2 */
+.wrapper {
+    padding: 0 20px;
+}
+
+/* Scrollとは ースマホ2 */
+.summary{
+    font-size:16px;
+ }
+
+/* 読者向け ースマホ2 */
+.makimono,
+.y-makimono{
+    width: 100%;
+    padding: 20px;
+}
+
+/* 巻物ひもースマホ2 */
+.makimono::before,
+.y-makimono::before{
+    width:180px;
+    top: -50px;
+    left: 120px;
+}
+
+/*巻物まきまきースマホ2　*/
+.makimono::after,
+.y-makimono::after{
+    left: -11px;
+    z-index: 10;
+}
+
+article{
+    padding: 20px;
+}
+
+/* 大見出しースマホ2*/
+h1 {
+    font-size: 32px;
+}
+
+/* 巻物記事内容ースマホ2*/
+h3{
+    font-size: 20px;
+}
+}

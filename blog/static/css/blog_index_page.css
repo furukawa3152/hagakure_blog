@@ -1,0 +1,256 @@
+@charset "UTF-8";
+
+body {
+  margin: 0;
+  background-color: #fefbf6;
+  font-family: "zen Maru Gothic", "Yu Gothic", "Hiragino kaku Gothic",
+    sans-serif;
+  color: #625651;
+}
+
+/* ページ幅 */
+.container {
+  margin: 0 auto;
+  padding: 0 10px;
+  max-width: 1040px;
+}
+
+/* 記事一覧の表示設定 */
+.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+/* 概要説明 */
+.summary {
+  margin-top: 80px;
+  text-align: center;
+}
+
+.wrapper::after{
+  content:"";
+  display: block;
+  width:30%;
+}
+
+
+/* 記事_外枠 */
+.article {
+  width: 28%;
+  height: 100%;
+  margin-top: 120px;
+  padding: 10px;
+  background-image: url("/static/images/blog_index_page/article_bg.svg");
+  border-radius: 20px 20px 0 0;
+  position: relative;
+}
+.article::before,
+.article::after {
+  position: absolute;
+  content: "";
+}
+.article::before {
+  background: url("/static/images/blog_index_page/himo.png") no-repeat;
+  width: 15%;
+  height: 50px;
+  top: -50px;
+  left: 47%;
+}
+.article::after {
+  background: url("/static/images/blog_index_page/article_img2.png") no-repeat left/100%;
+  display: block;
+  width: 110%;
+  height: 50px;
+  left: -15px;
+  z-index: 10;
+}
+/* 記事_リンク */
+.article a {
+  color: #625651;
+  text-decoration: none;
+}
+.article a:hover {
+  opacity: 0.7;
+  transition: ease-in-out 0.3s;
+}
+/* 記事_内枠 */
+.article_wrapper {
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 24px;
+}
+/* 記事_投稿時間 */
+.article_wrapper > time {
+  display: block;
+  text-align: right;
+}
+/* 記事_イメージ画像 */
+/* 縦横比を維持して表示するためにarticle_img_wrapper追加（古川） */
+.article_img_wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 66.66%; /* 3:2 = 2 ÷ 3 × 100 */
+  overflow: hidden;
+  border-radius: 24px;
+}
+
+.article_img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* or "contain" if you want to fit without cropping */
+  border-radius: 24px;
+  display: block;
+}
+/* 記事名 */
+.article_title {
+  margin: 0;
+}
+/* 記事_作者 */
+.article_contributor {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.article_contributor > img {
+  border-radius: 50%;
+  width: 50px;
+}
+.article_contributor > p {
+  margin-left: 10px;
+}
+/* 記事_「いいね」や「カテゴリー」 */
+.article_other {
+  display: flex;
+  align-items: center;
+}
+/* 記事_いいね */
+.article_like {
+  display: flex;
+  align-items: center;
+}
+.article_like > button {
+  background-color: transparent;
+  border: none;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-content: center;
+}
+.article_like > button > svg {
+  width: 40px;
+  height: 40px;
+}
+
+/* 記事_カテゴリー設定 */
+.article_category > ul {
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+.article_category > ul > li > a {
+  display: block;
+  padding: 0 20px;
+  margin-bottom: 10px;
+  background-color: #edcf3b;
+  border-radius: 20px;
+}
+.article_category > ul > li > a:nth-of-type(2n + 1) {
+  margin-left: 10px;
+}
+
+/* ページ移動 */
+.page {
+  margin: 100px auto 100px;
+  padding: 100px 0;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+}
+
+.page a {
+  color: #625651;
+  text-decoration: none;
+}
+
+.page-number {
+  padding: 20px;
+}
+
+.page-number:hover {
+  background-color: RGB(98, 86, 81,0.5);
+  color: #fff;
+  border-radius: 50px;
+  transition: 0.1s;
+  padding: 20px;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  align-height: 20px;
+}
+.page-prev,
+.page-next {
+  display: inline-block;
+  padding: 20px 40px;
+  background-color: #edcf3b;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.25);
+  border-radius: 30px;
+}
+.page-prev {
+  margin-right: 20px;
+}
+.page-next {
+  margin-left: 20px;
+}
+.page-prev:hover,
+.page-next:hover{
+  display: inline-block;
+  background-color: #ffdf42;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.25);
+  border-radius: 30px;
+}
+.current {
+  background-color: #625651;
+  color: #fff !important;
+  border-radius: 50px;
+  padding: 20px;
+  width:20px;
+  height:20px;
+  text-align:center;
+  align-height: 20px;
+}
+/* タブレット */
+@media screen and (max-width: 768px) {
+  .container {
+    padding: 0 20px;
+  }
+  .article {
+    width: 45%;
+  }
+}
+/* スマホ1 */
+@media screen and (max-width: 470px) {
+  .wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+  .article {
+    width: 85%;
+  }
+}
+/* スマホ2 */
+@media screen and (max-width: 375px) {
+  .page-prev {
+    margin-right: 10px;
+  }
+  .page-next {
+    margin-left: 10px;
+  }
+  .page > a {
+    padding: 6px;
+  }
+}

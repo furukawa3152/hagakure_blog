@@ -1,0 +1,60 @@
+{% load static wagtailcore_tags wagtailuserbar %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}HAGAKUREプログラミング塾|Scroll{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+</head>
+<body>
+
+  <header class="header">
+    <div class="header_inner">
+
+      <a href="/blog">
+        <img src="{% static 'image/base/scroll_logo.png' %}" alt="scroll_ロゴ" class="logo">
+      </a> 
+
+      <div class="header-buttons">
+        <a href="https://hagakurepgm.net/index.cgi/accounts/google/login/" class="login-button">
+          <span class="button-text">記事を書く</span>
+        </a>
+      </div>
+
+      <div class="header_wave">
+        {% for _ in "12345678901234" %}
+          <div class="wave-box"></div>
+        {% endfor %}
+      </div>
+
+    </div>
+  </header>
+
+  <main>
+    {% block content %}
+    {% endblock %}
+  </main>
+
+  <footer class="footer">
+    <div class="footer_inner">
+
+      <div class="footer_wave">
+        {% for _ in "12345678901234" %}
+          <div class="wave-box"></div>
+        {% endfor %}
+      </div>
+
+      <div class="guidelines_links">
+        <a href="{% url 'blog_guidelines' %}" class="guidelines_link">Scroll ガイドライン</a>
+      </div>
+
+      <div class="footer_copyright">
+        <p>©HAGAKUREPROGRAMMING塾 SINCE2022</p>
+      </div>
+
+    </div>
+  </footer>
+
+</body>
+</html>

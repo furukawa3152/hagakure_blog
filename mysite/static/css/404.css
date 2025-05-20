@@ -1,0 +1,92 @@
+@charset "UTF-8";
+
+/* 全体　*/
+body {
+    background-color: #FEFBF6;
+    font-family: "zen Maru Gothic", "Yu Gothic", "Hiragino kaku Gothic",sans-serif;
+    color: #625651;
+}
+
+.yuji-mai-regular {
+  font-family: "Yuji Mai", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.wrapper {
+    margin: 150px auto;
+
+    text-align: center;
+}
+
+img{
+    width: 25%;
+    height: 25%;
+}
+
+h1 {
+    font-size: 56px;
+}
+
+h2 {
+    font-size: 72px;
+    line-height: 0.9;
+    letter-spacing: 0.1em;
+}
+
+h3 {
+    font-size: 24px;
+    letter-spacing: 0.1em;
+}
+
+
+
+
+
+
+/* --------------------レスポンシブ対応---------------------------- */
+/* タブレット */
+@media screen and (max-width: 700px) {
+
+/* 大見出しータブレット*/
+h1 {
+    font-size: 48px;
+}
+}
+
+/* --------------------レスポンシブ対応2---------------------------- */
+/* スマホ1 */
+@media screen and (max-width: 470px) {
+
+
+/* 大見出しースマホ1*/
+h1 {
+    font-size: 36px;
+}
+
+/* 404ースマホ1*/
+h2 {
+    font-size: 56px;
+}
+}
+
+/* --------------------レスポンシブ対応3---------------------------- */
+/* スマホ2 */
+@media screen and (max-width: 375px) {
+
+
+/* 大見出しースマホ2*/
+h1 {
+    font-size: 32px;
+}
+
+/* 404ースマホ2*/
+h2 {
+    font-size: 48px;
+}
+
+/* Not foundースマホ2*/
+h3{
+    font-size: 20px;
+}
+}

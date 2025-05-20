@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags %}
+{% load wagtailimages_tags %}
+{% block content %}
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HAGAKURE Page Not Found</title>
+  <!-- Googleフォントを使用 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap"
+    rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Philosopher&family=Yuji+Mai&display=swap" rel="stylesheet">
+  <!-- リセットCSSを使用 -->
+    <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
+    <link rel="stylesheet" href="{% static 'css/500.css' %}">
+</head>
+
+<body>
+    <div class="wrapper">
+    <h1 class="yuji-mai-regular">かたじけない<br>サーバの調子が悪いようじゃ</h1>
+    <img id="samurai_thinking" alt="悩んでる侍" src="{% static 'image/500/samurai_thinking.png' %}">
+    <h2>500</h2>
+    </div>
+</body>
+</html>
+
+{% endblock %}

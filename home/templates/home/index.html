@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+ <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# website: http://ogp.me/ns/website#">
+  <meta charset="UTF-8">
+  <meta name="description" content="佐賀のプログラミングコミュニティ。HAGAKURE PROGRAMMING塾のWebページ">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% load static %}
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WLK68MXV');</script>
+<!-- End Google Tag Manager -->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PQMQ82P18K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PQMQ82P18K');
+</script>
+  <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="{% static 'js/scroll_on.js' %}"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/css/lightbox.css" rel="stylesheet">
+    <script src="{% static 'js/scroll_on.js' %}"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/js/lightbox.min.js"
+            type="text/javascript"></script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v15.0"
+    nonce="udzJmh8R"></script>
+  <!--  OGP-->
+  <!-- トップ巻物 -->
+  <script src="{% static 'js/top_makimono.js' %}"></script>
+
+
+    <meta property="og:url" content="https://hagakurepgm.net/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="HAGAKURE_PROGRAMMING塾">
+    <meta property="og:description" content="佐賀でプログラミングを学ぶ人達のコミュニティ、HAGAKURE PROGRAMMING塾です。">
+    <meta property="og:site_name" content="HAGAKURE_PROGRAMMING">
+    <meta property="og:image" content="{% static 'images/ogp.png' %}">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:image" content="{% static 'images/ogp.png' %}">
+    <!-- Django用 -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/earlyaccess/hannari.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="icon" href="{% static 'images/favicon.ico' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic&display=swap" rel="stylesheet">
+    <title>HAGAKUREプログラミング塾｜佐賀でプログラミングを学ぶ人達のコミュニティです。</title>
+  </head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WLK68MXV"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+  <header class="wrapper_hp">
+<!--    <nav class="navbar navbar-expand navbar-light bg-light">-->
+<!--      <div class="container-fluid navbar_back_header">-->
+<!--        <a class="navbar-brand" href="https://hagakurepgm.net/"><img class="logo_itaru" src="{% static 'images/logo.png' %}"logo.png"-->
+<!--            alt="logo"></a>-->
+<!--        <div class="nav-right_header">-->
+<!--          <ul class="list-group list-group-horizontal">-->
+<!--            <a href="https://www.facebook.com/102157125979726"><img class="fb_logo_header"-->
+<!--                src="{% static 'images/logo.png' %}"facebook_icon.png" alt="facebook"></a>-->
+<!--            <div class="contact_text_header DivLink_header">参加する-->
+<!--              <a class="Link_header" href="https://forms.gle/N8ipEt2RFSs8bt4a9"></a>-->
+<!--            </div>-->
+<!--          </ul>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </nav>-->
+        <nav class="navbar navbar-expand-sm navbar-light">
+          <div class="container-fluid menu_container">
+            <a class="navbar-brand" href="/">
+              <img src="{% static 'images/logo.png' %}" alt="hagakure_logo" width="30">
+            </a>
+<!--            <a class="voice-link" href="voice">塾生の声</a>-->
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse text-right" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto">
+                  <li class="nav-item">
+                    <!-- Django用にURL修正 -->
+                    <a class="nav-link" aria-current="page" href="/">ホーム</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'voice' %}">塾生の声</a>
+                  </li>
+                  <!-- Hagakure検定ページ追加 -->
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'saga_bot' %}">佐賀弁bot</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="https://forms.gle/N8ipEt2RFSs8bt4a9">参加フォーム</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="https://www.facebook.com/102157125979726">FB</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'term_use' %}">参加規約</a>
+                  </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+  </header>
+<section>
+
+  <!-- 巻物画面ここから -->
+  <div class="first-screen">
+    <img src="{% static 'images/top_makimono文字なし.png' %}" class="first-screen-icon-makimono" alt="Floating Image">
+    <img src="{% static 'images/logo.png' %}" class="first-screen-icon-logo" alt="Floating Image">
+    <h3>HAGAKURE<br>プログラミング塾</h3>
+    <p>佐賀県内で世代・職業を超えて同志とともに楽しく成長しませんか。</p>
+  </div>
+    <!-- 巻物画面ここまで -->
+    <main class="wrapper_hp main_visual">
+      <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active" data-bs-interval="7000">
+            <img src="{% static 'images/topworks.jpg' %}" class="d-block w-100" alt="top_works.jpg">
+          </div>
+          <div class="carousel-item" data-bs-interval="7000">
+            <img src="{% static 'images/top1.jpg' %}" class="d-block w-100 top1_image" alt="top1.jpg">
+            <div class="carousel-caption">
+              <div class="main_title_div">
+                <h1 class="main_title_1">HAGAKURE</h1>
+              </div>
+              <h2 class="main_title_2">プログラミング塾</h2>
+              <div class="main_title_daiya_block">
+                <img src="{% static 'images/daiya.png' %}" class="left_daiya" alt="daiya.png">
+                <div class="main_title_border"></div>
+                <img src="{% static 'images/daiya.png' %}" class="right_daiya" alt="daiya.png">
+              </div>
+              <div class="main_title_p_block">
+                <p class="main_title_p1">鍋島武士×プログラミング</p>
+                <p class="main_title_p2">同志よ、共に学ぶでござる</p>
+              </div>
+              <div class="main_title_daiya_block">
+                <img src="{% static 'images/daiya.png' %}" class="left_daiya" alt="daiya.png">
+                <div class="main_title_border"></div>
+                <img src="{% static 'images/daiya.png' %}" class="right_daiya" alt="daiya.png">
+              </div>
+              <p class="main_title_p3">鍋島武士×プログラミング</p>
+              <p class="main_title_p4">同志よ、共に学ぶでござる</p>
+            </div>
+          </div>
+         <div class="carousel-item matchcoin" data-bs-interval="7000">
+            <img src="{% static 'images/matchcoin_img.png' %}" class="d-block w-100" alt="matchcoin_img.png">
+            <a href="https://www.p-game.jp/game/344/detail"class="matchcoin_button">
+            <div class="matchcoin_div"></div></a>
+          </div>
+          <div class="carousel-item transformerSAGA" data-bs-interval="7000">
+            <img src="{% static 'images/transformerSAGA.png' %}" class="d-block w-100" alt="transformerSAGA.png">
+            <a href="https://hagakurepgm.net/saga_bot"class="transformerSAGA_button">
+            <div class="transformerSAGA_div"></div></a>
+          </div>
+          <div class="carousel-item" data-bs-interval="7000">
+            <img src="{% static 'images/top2.jpg' %}" class="d-block w-100" alt="top2.jpg">
+          </div>
+          <div class="carousel-item" data-bs-interval="7000">
+            <img src="{% static 'images/kenshi.png' %}" class="d-block w-100" alt="kenshi.jpg">
+          </div>
+        </div>
+      </div>
+    </main>
+    <main class="wrapper_hp main_visual_smartphone">
+      <div id="carouselExampleSlidesOnly2" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active" data-bs-interval="7000">
+            <img src="{% static 'images/top_keitai.jpg' %}" class="w-100" alt="top_keitai.jpg">
+          </div>
+          <div class="carousel-item" data-bs-interval="7000">
+            <img src="{% static 'images/kenshi_smartphone.jpg' %}" class="w-100" alt="kenshi.jpg">
+          </div>
+          <div class="carousel-item matchcoin" data-bs-interval="7000">
+            <a href="https://www.p-game.jp/game/344/detail"class="matchcoin_button">
+            <div class="matchcoin_div"></div></a>
+          </div>
+        </div>
+      </div>
+    </main>
+
+</section>
+<!--  /* 雪を降らせるコンテナ-*/-->
+<!--  <div class="snow-container">-->
+  <!-- about_us ここから-->
+  <section class="wrapper_hp">
+    <div class="all_aboutus">
+      <div class="container_aboutus scroll_up">
+        <div class="content_aboutus">
+          <h1 class="sub_title_aboutus marker">About us</h1>
+          <div class="description_aboutus">
+            <h2>アウトプットすることで、「自分の学び」を「みんなの学び」へ。</h2>
+            <p>
+              勉強する楽しさを、仲間と共有することで継続のモチベーションに変えていける。<br>コミュニティにはそんな力があると考えています。
+            </p>
+            <p>みんな塾生、みんな先生。<br>私たちは、世代、職業を超えて学び合いを楽しむことを目的にしています。<br>プログラミングを学びたい同志とともに、楽しく成長しませんか。</p>
+            <p>興味のある方、お気軽に<a href="https://forms.gle/N8ipEt2RFSs8bt4a9">参加フォーム</a>よりお問い合わせください。</p>
+          </div>
+        </div>
+        <div class="bottom_images_aboutus">
+          <div class="left_side_aboutus">
+            <div class="castle_aboutus">
+              <img src="{% static 'images/aboutus_castle.png' %}" alt="お城">
+            </div>
+          </div>
+          <div class="right_side_aboutus">
+            <div class="samurai_aboutus">
+              <img src="{% static 'images/aboutus_samurai.png' %}" alt="お侍さん">
+            </div>
+            <div class="tourou_aboutus">
+              <img src="{% static 'images/aboutus_tourou.png' %}" alt="灯籠">
+            </div>
+            <div class="bamboo_aboutus">
+              <img src="{% static 'images/aboutus_bamboo.png' %}" alt="竹">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- osusume ここから-->
+  <section class="wrapper_hp">
+    <div class="osusume_container">
+      <div class="osusume scroll_up">
+        <div class="osusume_left">
+          <div class="osusume_text">
+            <h1 class="marker">こんな方におすすめ</h1>
+            <p>佐賀県内のプログラミング好きと仲良くなりたい。<br>
+              独学でプログラミングを勉強しているけど、アウトプットの機会がない。<br>
+              ITで、なんかワクワク♪したい人。<br>
+              仕事でITを活用している。同じような仲間と知識を共有したい。<br>
+              プログラミングをこれから勉強していきたい。<br>
+              SSSなどで学んだプログラミング知識を風化させないため、情報に触れていたい。</p>
+          </div>
+        </div>
+        <div class="osusume_right">
+           <img class="osusume_event_photo" src="{% static 'images/topworks.jpg' %}" alt="オフラインイベントの様子">
+        </div>
+      </div>
+    </div>
+  </section>
+  <!--受講者の声 ここから-->
+  <section class="some_voices_container wrapper_hp">
+    <div class="some_voices scroll_up">
+      <h1>受講者の声</h1>
+      <div class="some_voices_main">
+        <div class="some_voices_col">
+            <div class="voice_index_frame">
+                <div class="person_index">
+                  <div class="persons">
+                    <img src="{% static 'images/voice/voice-samurai.png' %}" alt="voice-samurai.png" class="persons">
+                  </div>
+                </div>
+                <p>いろいろな情報が得られます。。<br>特定の分野やテーマについて興味のある人が集まって一緒に学ぶ分科会、または研究会のようなものが出来ればと思います。</p>
+            </div>
+            <div class="voice_index_frame">
+                <div class="person_index">
+                  <div class="ninja">
+                    <img src="{% static 'images/voice/voice-ninja2.png' %}" alt="voice-ninja2.png">
+                  </div>
+                </div>
+                <p>知的な刺激を貰えます。<br>それでいて、ゆるい雰囲気で自由。日常生活では出会えない多種多様な人々と、プログラミングを通して知り合えました。</p>
+            </div>
+        </div>
+        <div class="some_voices_col">
+            <div class="voice_index_frame">
+                <div class="person_index">
+                  <div class="ninja">
+                    <img src="{% static 'images/voice/voice-ninja1.png' %}" alt="voice-ninja1.png">
+                  </div>
+                </div>
+                <p>同じ業界でITやAIを活用したい方との繋がりができ、仕事のモチベーションの維持になります。一人では勉強を継続することはなかなか難しいですが、仲間がいると頑張れます。</p>
+            </div>
+            <div class="voice_index_frame">
+                <div class="person_index">
+                   <div class="persons">
+                     <img src="{% static 'images/voice/machi-musume.png' %}" alt="machi-musume.png">
+                   </div>
+                </div>
+                <p>実際にPythonを動かしている画面を共有して見せてもらった時は感動しました。また、いろいろな職種の方が参加されていて、意識が高いので触発されています。</p>
+            </div>
+        </div>
+      </div>
+      <a href="voice">もっと体験談を読む 〉</a>
+    </div>
+  </section>
+  <!--hagakure ここから-->
+  <!-- <div id="particles-js"></div> -->
+  <!--hagakure ここまで-->
+ <!--  /* 雪を降らせるコンテナ-*/-->
+<!--  </div>-->
+    <!--入塾までの流れ ここから-->
+    <section class="wrapper_hp nyujuku">
+      <div class="container_nyujuku scroll_up">
+        <!-- 他のタグがh1なのでそろえる。 -->
+        <h1 class="nyujuku_ttl">入塾までの流れ</h1>
+        <dl class="nyujuku_flow">
+          <div class="flow_contents">
+            <div class="contents_num">1</div>
+            <dt>申し込み</dt>
+            <dd>申込フォームから必要事項を記入して申し込みます。参加は無料です。</dd>
+            <div class="contents_img">
+              <img src="{% static 'images/Google_Forms_logo_(2014-2020) 1.png' %}" alt="">
+            </div>
+          </div>
+          <div class="flow_contents">
+            <div class="contents_num">2</div>
+            <dt>メール</dt>
+            <dd>申し込み後、１〜２日 以内に運営から招待メールが届きます。</dd>
+            <div class="contents_img">
+              <img src="{% static 'images/mail.png' %}" alt="">
+            </div>
+          </div>
+          <div class="flow_contents">
+            <div class="contents_num">3</div>
+            <dt>参加</dt>
+            <dd>SlackおよびGitHubに招待しますので、参加します。</dd>
+            <div class="contents_img">
+              <img src="{% static 'images/Slack_icon_2019 1.png' %}" alt="">
+              <img src="{% static 'images/Octicons-mark-github 1.png' %}" alt="">
+            </div>
+          </div>
+          <div class="flow_contents">
+            <div class="contents_num">4</div>
+            <dt>学ぶ</dt>
+            <dd>参加完了です。 同志とともに楽しく学びましょう。</dd>
+            <div class="contents_img">
+              <img src="{% static 'images/samurai_inspi 1.png' %}" alt="">
+            </div>
+          </div>
+        </dl>
+      </div>
+    </section>
+ <!-- New dojoここから-->
+  <section class="wrapper_hp">
+    <div class="dojo_container">
+      <div class="dojo scroll_up">
+        <div class="dojo_left">
+           <img class="dojo_image" src="{% static 'images/lightning_talk.jpg' %}" alt="ライトニングトーク会の様子">
+        </div>
+        <div class="dojo_right">
+          <div class="dojo_text">
+            <h1 class="marker">Dojo</h1>
+              <p>
+                サポート企業である株式会社ocomoji様より支援いただき、<br>
+                ZOOMの有償アカウントを購入させていただいております。<br>
+                塾生が利用できる自習室の開設や、オンラインでの勉強会、<br>
+                ライトニングトーク会に利用しています。<br>
+                ※画像は第３回ライトニングトーク会の模様です。<br>
+                スポンサー企業：<a href="https://ocomoji.co.jp/">株式会社ocomoji</a>様
+              </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- New dojoここまで-->
+  <!--入塾までの流れ ここまで-->
+    <!--SNS ここから-->
+    <section class="wrapper_hp">
+      <div class="container_sns_makimono">
+        <div class="item_left_makimono">
+          <img src="{% static 'images/samurai_thinking.png' %}"class="samurai_think_img"alt="考える侍">
+          <img src="{% static 'images/footer_clouds.png' %}" class="cloud_makimono" alt="雲">
+          <img src="{% static 'images/footer_wood2.png' %}" class="forest_makimono" alt="木">
+        </div> <!-- /.item_right -->
+        <div class="scroll_up">
+        <div class="background-image_makimono">
+          <div class="makimono_image_makimono">
+            <img src="{% static 'images/makimono_topicon2.png' %}" class="makimono_img" alt="巻物">
+          </div>
+            <div class="sns_box_makimono">
+              <h1 class="sns_part_makimono">makimono</h1>
+                <h3 class="sub_title_sns"></h3>
+                <div class="fb-wrapper">
+                  <div class="fb-page facebook_wide_makimono"
+                    data-href="https://www.facebook.com/profile.php?id=100085682160764" data-show-posts="true"
+                    data-width="400" data-height="500" data-small-header="false" data-adapt-container-width="false"
+                    data-hide-cover="false" data-show-facepile="true">
+                    <blockquote cite="https://www.facebook.com/profile.php?id=100085682160764"
+                      class="fb-xfbml-parse-ignore"><a
+                        href="https://www.facebook.com/profile.php?id=100085682160764">Hagakure Programming塾</a>
+                    </blockquote>
+                  </div>
+                </div>
+                <div class="fb-page facebook_narrow_makimono"
+                  data-href="https://www.facebook.com/profile.php?id=100085682160764" data-show-posts="true"
+                  data-width="320" data-height="500" data-small-header="false" data-adapt-container-width="false"
+                  data-hide-cover="false" data-show-facepile="true">
+                  <blockquote cite="https://www.facebook.com/profile.php?id=100085682160764"
+                    class="fb-xfbml-parse-ignore"><a
+                    href="https://www.facebook.com/profile.php?id=100085682160764">Hagakure Programming塾</a>
+                  </blockquote>
+                </div>
+            </div>
+          </div>
+          <div class="hagakure_wrapper">
+            <h3 class="marker">hagakure</h3>
+              <p>
+                江戸時代に佐賀藩の藩士によって書かれた書物で、<br>
+                武士の精神や日頃の行いのあり方について説いています。<br>
+                今を生きるわたしたちにとっても「生きていくためのヒント」が詰まっており、<br>
+                佐賀で学ぶ我々にも通じる部分があると考えコミュニティ名にしました。
+              </p>
+          </div>
+        </div>
+      <div class="item_right_makimono">
+        <img src="{% static 'images/samurai_inspi.png' %}"class="samurai_inspi_img"alt="思いつく侍">
+        <img src="{% static 'images/footer_castle2.png' %}" class="castle_makimono" alt="お城">
+      </div><!-- /.item_left -->
+      </div><!-- /.container_sns -->
+    </section>
+    <!--SNS ここまで-->
+
+  <!--dojo_makimonoのグループここまで-->
+  <!-- 申込フォームボタン -->
+  <div class="form_button">
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSc9WH1hvDtyB_pghy8NNrrLCVeGONm7o8ET2PF70KPZTel_jQ/viewform">
+    <img src="{% static 'images/form_button.png' %}" alt="申込ボタン">
+    </a>
+  </div>
+  <!-- 申込フォームボタンここまで -->
+  <footer>
+    <div class="wrapper_hp footer">
+      <div class="footer_border"></div>
+      <p><small>&copy;HAGAKURE PROGRAMMING塾 since2022</small></p>
+      <img class="footer_logo" src="{% static 'images/footer_logo.png' %}" alt="samurai_and_ninja">
+    </div>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+        <script src="js/window.js"></script> -->
+</body>
+
+</html>

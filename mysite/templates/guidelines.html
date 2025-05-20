@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags %}
+{% load wagtailimages_tags %}
+{% block content %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>トップ画面</title>
+    <!-- Googleフォントを使用 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap"
+    rel="stylesheet">
+    <!-- リセットCSSを使用 -->
+    <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
+    <link rel="stylesheet" href="{% static 'css/guidelines.css' %}">
+</head>
+
+<body>
+<div class="wrapper">
+    <h1>Scrollガイドライン</h1>
+    
+    <section class="summary">Scrollは、HAGAKUREプログラミング塾の参加者が運営するブログサイトです。<br>
+        日々の学びや成果、失敗談、そして佐賀に関する情報を共有する場として活用されています。<br>
+        「HAGAKURE（葉隠）」は、江戸時代に佐賀藩士が著した武士の心得を説く書物です。<br>
+        知識や経験を記録し、共有する場としてこのブログを「Scroll（巻物）」と名付けました。<br>
+        読者はスクロールして記事を読み、書き手は自身の経験をこの巻物（ブログ）に綴っていきます。<br>
+    </section>
+
+    <article>
+            <div class="makimono">
+                <div class="yomite">
+                    <h3>
+                        <span class="y-circle"></span>読者向け<span class="y-circle"></span>
+                    </h3>
+                    <br>
+                    <span class="midashi">気軽に楽しめるブログ</span>
+                    <ul>
+                        <li>プログラミングなどの技術記事を中心に、さまざまなテーマの記事を読むことができます。</li>
+                        <li>初心者向けの記事も多く、学びのスタートや新しい気づきのきっかけになります。</li>
+                    </ul>
+                    <br>
+                    <span class="midashi">試行錯誤や失敗も大切な学び</span>
+                    <ul>
+                        <li>成功事例だけでなく、試行錯誤の過程や失敗談も貴重な情報です。</li>
+                        <li>「途中で諦めた」「ここまではできた」などのリアルな経験談も掲載されています。</li>
+                    </ul>
+                    <br>
+                    <span class="midashi">インプットの魅力</span>
+                    <ul>
+                        <li>他の人の考えや経験を知ることで、新しい視点を得ることができます。</li>
+                        <li>継続的な学びのモチベーションにもつながります。</li>
+                    </ul>
+                    <br>
+                    <span class="midashi">記事のジャンル</span>
+                    <ul>
+                        <li>技術解説 / 実践記録 / 体験談 / おすすめ情報 など、多彩なジャンルの記事があります。</li>
+                    </ul>
+                    <br>
+                    <span class="midashi">注意事項</span>
+                    <p class="attention">本ブログの利用に関する注意事項は、Scroll ガイドラインおよび
+                        <a href="https://hagakurepgm.net/term_use/">利用規約</a>に準じます。</p>
+                </div>
+            </div>
+
+            <div class="y-makimono">
+                <div class="kakite">
+                    <h3>
+                        <span class="y-circle"></span>書き手向け<span class="y-circle"></span>
+                    </h3>
+                    <br>
+                    <span class="midashi">書き手も気軽に楽しめるブログ</span>
+                    <ul>
+                        <li>完璧を目指さず、思いついたことや今やってみたこと色んなことを投稿しましょう。</li>
+                        <li>スマホからも簡単に投稿できます。移動中や休憩時間でもすぐに共有できます。</li>
+                        <li>プログラミングの内容でなくてもOK！あなたの経験や知識を共有しましょう！</li>
+                    </ul>
+                    <br>
+                    <span class="midashi">試行錯誤や失敗も大切な学び</span>
+                    <ul>
+                        <li>「試してみたけどうまくいかなかった」「途中で諦めた」経験も価値ある情報です。</li>
+                        <li>失敗談や途中経過の記事でも、読者にとって貴重な学びになります。書くか迷ったら、まず書いてみましょう。</li>
+                    </ul>
+                    <br>
+                    <span class="midashi">アウトプットの魅力</span>
+                    <ul>
+                        <li>記事を書くことで、自分の考えを整理できます。</li>
+                        <li>読者の反応から新たな気づきや学びが得られます。</li>
+                        <li>継続的な学びのモチベーションにつながります。</li>
+                    </ul>
+                    <br>
+                    <span class="midashi">記事のジャンル</span>
+                    <ul>
+                        <li>「作ってみた・やってみた」</li>
+                        <li>「初めて知った」</li>
+                        <li>「これから挑戦したいこと」</li>
+                        <li>「途中で諦めたこと・できなかったこと」</li>
+                        <li>「おすすめの〇〇」</li>
+                    </ul>
+                    <br>
+                    <span class="midashi">記事を書く際のポイント</span>
+                    <ul>
+                        <li>伝えたいことをは明確化しましょう。</li>
+                        <li>「自分が初めて読むなら？」を意識しましょう。</li>
+                        <li>画像や写真を活用して視覚的な情報も使いましょう。</li>
+                        <li>出典やリンクなど参考情報を明記しましょう。</li>
+                        <li>投稿前に読み直しましょう。</li>
+                    </ul>
+                    <br>
+                    <span class="midashi">注意事項</span>
+                    <p class="attention">本ブログの利用に関する注意事項は、Scroll ガイドラインおよび
+                        <a href="https://hagakurepgm.net/term_use/">利用規約</a>に準じます。</p>
+                </div>
+            </div>
+    </article>
+</div>
+</body>
+</html>
+
+
+
+{% endblock %}

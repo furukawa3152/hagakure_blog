@@ -7,6 +7,22 @@ body {
     color: #625651;
 }
 
+.block-rich_text > p > code {
+    background-color: #eee;
+    border-radius: 4px;
+    border-width: 4px;
+    border-style: solid;
+    border-color: #eee;
+}
+
+.block-markdown > p > code {
+    background-color: #eee;
+    border-radius: 4px;
+    border-width: 4px;
+    border-style: solid;
+    border-color: #eee;
+}
+
 .container {
     margin: 100px auto 100px auto; 
     max-width: 784px;
@@ -16,9 +32,9 @@ body {
     row-gap: 64px;
 }
 
-.string {
-    width: 25%;
-    height: 25%;
+.himo {
+    width: 35%;
+    height: 35%;
     position: relative;
     top: 12px;
     left: 47%;
@@ -234,14 +250,21 @@ body {
     height: 360px;
 }
 
+@media screen and (max-width: 768px) {
+    .container {
+        margin: 0 0 48px 0 ;
+    }
+}
+
+
 @media screen and (max-width: 440px) {
     .container {
         margin: 0 0 48px 0 ;
     }
 
-    .string {
-        width: 25%;
-        height: 25%;
+    .himo {
+        width: 45%;
+        height: 45%;
         position: relative;
         top: 1.2vh;
         left: 47%;

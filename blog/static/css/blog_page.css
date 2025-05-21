@@ -252,14 +252,14 @@ body {
 
 @media screen and (max-width: 768px) {
     .container {
-        margin: 0 0 48px 0 ;
+        margin: 48px 0 48px 0 ;
     }
 }
 
 
 @media screen and (max-width: 440px) {
     .container {
-        margin: 0 0 48px 0 ;
+        margin: 24px 0 48px 0 ;
     }
 
     .himo {

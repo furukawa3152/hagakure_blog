@@ -131,13 +131,16 @@ html, body {
     gap: -10px;
 }
 
-.header_wave .wave-box {
+.header_wave .wave-box,
+.footer_wave .wave-box
+ {
     width: 170px;
     height: 185px;
     background-color: #6AC15D;
     border-radius: 0 0 65px 65px; /* 下2つの角を丸くする */
     margin-left: -10px;
 }
+
 html, body {
     height: 100vh;
     margin: 0;
@@ -149,7 +152,6 @@ html, body {
 .footer {
     margin-top: auto;
     width: 100%;
-    background-color: #6AC15D;
     border-radius: 15px 15px 0px 0px;
     position: relative;
     padding: 0;
@@ -200,7 +202,7 @@ html, body {
 .guidelines_link {
     position: static;
     color: #FFFFFF;
-    font-size: 22px;
+    font-size: 20px;
     text-decoration: none;
 }
 
@@ -237,7 +239,7 @@ html, body {
 
 @media (max-width: 768px){
     .header_inner{
-    flex-direction:column;
+    flex-direction:row;
     height:auto;
     padding: 20px;
     gap: 20px;
@@ -271,6 +273,7 @@ html, body {
     .search-bar img,
     .create-button img,
     .login-button img {
+        display:block;
         width: 30px;
         height: 30px;
         object-fit: contain;
@@ -294,7 +297,7 @@ html, body {
 
     .footer_wave .wave-box {
     width: 80px;
-    height: 90px;
+    height: 180px;
     border-radius: 40px 40px 0 0;
     }
 
@@ -302,4 +305,4 @@ html, body {
     font-size: 8px;
     bottom: 5px;
     }
-}
+}　

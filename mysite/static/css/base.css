@@ -133,9 +133,9 @@ html, body {
 
 .header_wave .wave-box,
 .footer_wave .wave-box
- {
+{
     width: 170px;
-    height: 185px;
+    height: 180px;
     background-color: #6AC15D;
     border-radius: 0 0 65px 65px; /* 下2つの角を丸くする */
     margin-left: -10px;
@@ -182,7 +182,7 @@ html, body {
 
 .footer_wave .wave-box {
     width: 170px;
-    height: 185px;
+    height: 180px;
     background-color: #4FB7DB;
     border-radius: 65px 65px 0px 0px; /* 上2つの角を丸くする */
     margin-left: -10px;
@@ -246,12 +246,18 @@ html, body {
     }
 
     .logo{
-    width: 180px;
+    width: 140px;
+    }
+
+    .header_wave .wave-box,
+    .footer_wave .wave-box
+    {
+    height: 120px;
     }
 
     .search-bar, .create-button, .login-button {
-        width: 65px;
-        height: 65px;
+        width: 50px;
+        height: 50px;
         border-radius: 50%;
         background-color: #EDCF3B;
         box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.15);
@@ -274,8 +280,8 @@ html, body {
     .create-button img,
     .login-button img {
         display:block;
-        width: 30px;
-        height: 30px;
+        width: 20px;
+        height: 20px;
         object-fit: contain;
     }
     .button-text {
@@ -305,4 +311,4 @@ html, body {
     font-size: 8px;
     bottom: 5px;
     }
-}　
+}

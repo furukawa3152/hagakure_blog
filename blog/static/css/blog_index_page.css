@@ -259,4 +259,9 @@ body {
   .page > a {
     padding: 6px;
   }
+  .summary
+  {
+    margin-top: 40px;
+    font-size: 0.7rem;
+  }
 }

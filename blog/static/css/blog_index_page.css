@@ -40,7 +40,7 @@ body {
 .article {
   width: 28%;
   height: 100%;
-  margin-top: 80px;
+  margin-top: 90px;
   padding: 10px;
   background-image: url("/static/images/blog_index_page/article_bg.svg");
   border-radius: 20px 20px 0 0;
@@ -238,14 +238,16 @@ body {
   .wrapper {
     flex-direction: column;
     align-items: center;
-  }
-  .article {
-    width: 85%;
+    margin-top: -30px;
   }
   .summary
   {
-    margin-top: 40px;
+    margin-top: 30px;
     font-size: 0.8rem;
+  }
+    .article {
+    width: 75%;
+    margin-top: 100px;
   }
 }
 /* スマホ2 */
@@ -261,7 +263,7 @@ body {
   }
   .summary
   {
-    margin-top: 40px;
+    margin-top: 30px;
     font-size: 0.7rem;
   }
 }

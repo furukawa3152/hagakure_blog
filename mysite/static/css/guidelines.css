@@ -22,9 +22,9 @@ h1 {
 
 /* Scrollとは */
 .summary {
-    margin: 50px 100px auto 0; 
-    width: 100%;
-    text-align: center;
+    margin: 50px auto;
+    width: 80%;
+    text-align: left;
     font-size: 20px;
 }
 
@@ -205,7 +205,7 @@ ul li{
 
 /* 巻物ひもータブレット */
 .makimono::before,
-.y-makimono::before,{
+.y-makimono::before{
     width:250px;
     background-size:contain;
     top: -70px;
@@ -215,6 +215,10 @@ ul li{
 /* 大見出しータブレット*/
 h1 {
     font-size: 48px;
+}
+
+.makimono{
+    padding: 20px;
 }
 }
 
@@ -226,15 +230,23 @@ h1 {
     padding: 0 20px;
 }
 
+/* スマホ1大見出し */
+h1 {
+    margin-top: 50px;
+    font-size: 36px;
+}
+
 /* Scrollとは ースマホ1 */
-.summary{
-    font-size:16px;
+.summary {
+    margin-top: 30px;
+    margin-bottom: -20px;
+    width: 90%;
 }
 
 /* 読者向け ースマホ1 */
-.makimono,
-.y-makimono{
-    width: 100%;
+/* 巻物背景　白 */
+.yomite,
+.kakite {
     padding: 20px;
 }
 
@@ -250,13 +262,13 @@ h1 {
 /*巻物まきまきースマホ1　*/
 .makimono::after,
 .y-makimono::after{
-  left: -15px;
-  z-index: 10;
+    left: -15px;
+    z-index: 10;
 }
 
-/* 大見出しースマホ1*/
-h1 {
-    font-size: 36px;
+/* 巻物記事内容ースマホ1*/
+h3{
+    font-size: 18px;
 }
 
 h3::before,
@@ -264,6 +276,17 @@ h3::after {
     width: 8px; /* 丸の幅 */
     height: 8px; /* 丸の高さ */
 }
+
+/* スマホ1文章 */
+ul li{
+    font-size: 16px;
+}
+
+/* スマホ1注意事項 */
+.attention{
+    font-size: 16px;
+}
+
 }
 
 /* --------------------レスポンシブ対応3---------------------------- */
@@ -278,7 +301,7 @@ h3::after {
 /* Scrollとは ースマホ2 */
 .summary{
     font-size:16px;
- }
+}
 
 /* 読者向け ースマホ2 */
 .makimono,
@@ -306,13 +329,4 @@ article{
     padding: 20px;
 }
 
-/* 大見出しースマホ2*/
-h1 {
-    font-size: 32px;
-}
-
-/* 巻物記事内容ースマホ2*/
-h3{
-    font-size: 20px;
-}
 }

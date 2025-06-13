@@ -2,6 +2,21 @@
 {% load static wagtailcore_tags %}
 {% load wagtailimages_tags %}
 
+{% block extra_head %}
+<meta property="og:title" content="{{ page.title }}" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="{{ request.build_absolute_uri }}" />
+{% if page.thumbnail %}
+    {% image page.thumbnail original as thumbnail %}
+    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ thumbnail.url }}" />
+{% else %}
+    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'images/blog_page/article_no_img.png' %}" />
+{% endif %}
+<meta property="og:site_name" content="HAGAKUREのブログサイト Scroll" />
+<meta property="og:description" content="{{ page.body|striptags|truncatechars_html:120|truncatewords:15 }}" />
+<meta name="twitter:card" content="summary_large_image" />
+{% endblock %}
+
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/blog_page.css' %}">
 <div class="container">

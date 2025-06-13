@@ -1,1 +1,8 @@
 mysite/settings/*.json
+.env
+env
+env
+__pycache__/
+*.pyc
+.DS_Store
+db.sqlite3

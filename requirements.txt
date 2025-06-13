@@ -49,3 +49,4 @@ wagtailcodeblock==1.29.0.2
 webencodings==0.5.1
 Willow==1.8.0
 zipp==3.20.2
+openai

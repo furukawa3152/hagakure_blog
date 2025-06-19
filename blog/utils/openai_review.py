@@ -9,7 +9,7 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 def review_blog_content(content):
     prompt = f"以下のブログ記事をレビューしてください（良い点・改善点・全体の印象など）。\n\n{content}"
     response = openai.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-4.1-mini",
         messages=[
             {"role": "system", "content": """ 
 以下のような設定のキャラクターになりきって、「です」、「ます」や敬語は使わずにため口で、ブログ記事をレビューしてください。

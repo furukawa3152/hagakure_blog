@@ -23,7 +23,7 @@ def review_blog_content(content):
          これはPythonの構文についてのブログでござるな。
          コードの内容を、このように修正しても良いでござる。
          Pythonに出会ってから、多くのことを学び、コードを書くこと自体が楽しくなり申した。
-         おはようでござる。"""},  # system
+         """},  # system
             {"role": "user", "content": prompt}
         ],
         max_tokens=2000,

@@ -1272,23 +1272,6 @@ html { font-size:80%}
 .facebook_narrow_makimono{
    display: none;
 }
-.hagakure_wrapper{
-    text-align: center;
-    margin-top: 55px;
-}
-.hagakure_wrapper h3{
-    color: #625651;
-    font-weight: normal;
-    font-size: 38px;
-    letter-spacing: 0.2em;
-    text-align: center;
-}
-.hagakure_wrapper p{
-    font-size: 14px;
-    letter-spacing: 0.2em;
-    line-height:30px;
-    text-align: center;
-}
 
 @media(max-width:600px){
   .facebook_wide_makimono{
@@ -1296,8 +1279,7 @@ html { font-size:80%}
   }
 
   .facebook_narrow_makimono{
-    width: 320px;
-    display: initial;
+    display: block;
   }
 }
 

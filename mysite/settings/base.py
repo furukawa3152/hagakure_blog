@@ -105,6 +105,7 @@ DATABASES = {
         "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
     }
 }
+WAGTAIL_ALLOW_UNICODE_SLUGS = True
 
 
 # Password validation

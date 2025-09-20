@@ -233,3 +233,21 @@ class BlogPage(Page):
         return self.like_set.filter(user=user).exists()
 
     # ------いいねボタンここまで
+    def save(self, *args, **kwargs):
+        is_creating = self.pk is None
+        original_slug = self.slug
+        super().save(*args, **kwargs)  # ここでIDが採番される
+
+        # 作成時のみ、スラッグをIDに固定し、url_pathも更新する
+        if is_creating:
+            desired_slug = str(self.pk)
+            if self.slug != desired_slug:
+                self.slug = desired_slug
+                # url_path も更新してリンク不整合を防ぐ
+                try:
+                    parent = self.get_parent()
+                except Exception:
+                    parent = None
+                if parent is not None:
+                    self.set_url_path(parent)
+                super().save(update_fields=['slug', 'url_path'])

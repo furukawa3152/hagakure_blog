@@ -7,6 +7,7 @@ def read_acount_list():
     # サービスアカウントのJSONキーのパス
     BASE_DIR = Path(__file__).resolve().parent
 
+    # settings配下に置いたキーを直接参照（実行環境に合わせて配置すること）
     SERVICE_ACCOUNT_FILE = os.path.join(BASE_DIR, 'hagakurewagtailauth-fbf65e104bc8.json')
 
 

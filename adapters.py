@@ -5,6 +5,8 @@ from django.core.exceptions import PermissionDenied
 from mysite.settings.google_email_whitelist import get_allowed_emails
 
 allowed = get_allowed_emails()
+
+# Google Sheet側のホワイトリストを使ってログインと権限付与を制御（tests.AuthAdapterTests で確認）
 class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
     def pre_social_login(self, request, sociallogin):
         email = sociallogin.user.email
@@ -17,6 +19,7 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
         email = user.email
 
         if email in allowed:
+            # 編集権限を持つユーザーは自動でスタッフ+Editorsグループへ（tests.AuthAdapterTests で確認）
             user.is_staff = True
             user.save()
 

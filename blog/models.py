@@ -17,10 +17,8 @@ from wagtailmarkdown.blocks import MarkdownBlock
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from django.core.exceptions import ValidationError
-from wagtail.admin.forms import WagtailAdminPageForm
 from wagtailcodeblock.blocks import CodeBlock
 from .blocks import ImageWithCaptionBlock
-
 
 # チャンネルのための追加
 @register_snippet
@@ -40,53 +38,12 @@ class BlogChannel(models.Model):
         verbose_name = "ブログチャンネル"
         verbose_name_plural = "ブログチャンネル"
 
-
-
 class BlogPageTag(TaggedItemBase):
     content_object = ParentalKey(
         'BlogPage',
         related_name='tagged_items',
         on_delete=models.CASCADE
     )
-
-import unicodedata
-
-def count_chars(value):
-    """半角文字を1、全角文字を2としてカウント"""
-    count = 0
-    for char in value:
-        # East Asian Widthプロパティを取得
-        width = unicodedata.east_asian_width(char)
-        count += 2 if width in 'FWA' else 1  # F:Fullwidth, W:Wide, A:Ambiguous
-    return count
-
-class BlogPageForm(WagtailAdminPageForm):
-    def clean_tags(self):
-        tags = self.cleaned_data['tags']
-
-        # タグデータの形式変換
-        if isinstance(tags, str):
-            tag_list = [t.strip() for t in tags.split(',') if t.strip()]
-        elif hasattr(tags, 'all'):
-            tag_list = [t.name for t in tags.all()]
-        else:
-            tag_list = list(tags)
-
-        # 個数制限（4個）
-        if len(tag_list) > 4:
-            self.add_error('tags', 'タグは最大4個まで選択可能です')
-
-        # 文字数制限
-        for tag in tag_list:
-            char_count = count_chars(tag)
-            if char_count > 10:  # 半角10文字/全角5文字換算
-                self.add_error(
-                    'tags',
-                    f'タグ「{tag}」: 半角10文字/全角5文字以内 (現在 {char_count // 2}全角換算)'
-                )
-
-        return tags
-
 
 # いいねボタンの実装
 class Like(models.Model):
@@ -101,6 +58,7 @@ class Like(models.Model):
                 name="like_unique"
             ),
         ]
+# IPアドレス単位で重複いいねを防ぐ（tests.BlogPageModelTests で検証）
 # ------いいねボタンここまで
 
 
@@ -116,7 +74,7 @@ class BlogIndexPage(Page):
         query = request.GET.get('q', '').strip()
 
         # --- クエリビルド ---
-        combined_query = Q()
+        combined_query = Q()  # タグ条件とキーワード条件をANDで積み上げる（tests.BlogPageModelTests で網羅）
 
         # タグ検索（slugベース）
         if tag_param:
@@ -171,7 +129,7 @@ class BlogPage(Page):
     # 親ページ子ページの制御
     parent_page_types = ['blog.BlogIndexPage']
     subpage_types = []
-    base_form_class = BlogPageForm
+    base_form_class = None  # 後段で blog.forms.BlogPageForm を割り当てる
 
     def clean(self):
         super().clean()
@@ -250,4 +208,8 @@ class BlogPage(Page):
                     parent = None
                 if parent is not None:
                     self.set_url_path(parent)
-                super().save(update_fields=['slug', 'url_path'])
+                super().save(update_fields=['slug', 'url_path'])  # スラッグ固定は tests.BlogPageModelTests で確認
+
+# 循環参照を避けるため、モデル定義後にフォームをバインド
+from .forms import BlogPageForm  # noqa: E402
+BlogPage.base_form_class = BlogPageForm

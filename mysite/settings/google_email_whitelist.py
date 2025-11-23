@@ -6,6 +6,7 @@ from mysite.settings import read_account_sheet                     # 既存モ�
 #CACHE_TTL = 60 * 60  # 1 時間
 
 def get_allowed_emails():
+    # Spreadsheetから最新の許可リストを都度取得（キャッシュなし）
     emails = read_account_sheet.read_acount_list()
     #if emails is None:
        # try:

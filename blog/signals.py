@@ -7,6 +7,7 @@ from blog.utils.sheet_logger import log_to_sheet
 
 @receiver(page_published)
 def notify_slack_on_publish(sender, instance, **kwargs):
+    # 公開時にSlack通知・AIレビュー・スプレッドシート記録をまとめて実行
     if isinstance(instance, BlogPage):
         # 本文を取得（例：page.bodyがStreamFieldの場合はstrで変換）
         content = str(instance.body)

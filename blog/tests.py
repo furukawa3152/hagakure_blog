@@ -1,6 +1,6 @@
 from allauth.socialaccount.models import SocialLogin
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, Permission
 from django.core.exceptions import PermissionDenied
 from django.db import IntegrityError
 from django.test import RequestFactory, TestCase
@@ -114,6 +114,61 @@ class BlogPageModelTests(TestCase):
 
         with self.assertRaises(IntegrityError):
             Like.objects.create(blogpage=page, ip_address="127.0.0.1", count=1)
+
+
+class DraftReviewApiTests(TestCase):
+    """管理画面のAI下書きレビューAPIを検証"""
+    def setUp(self):
+        root = Page.get_first_root_node()
+        self.home = HomePage(title="Home", slug=f"home-{uuid.uuid4().hex[:8]}")
+        root.add_child(instance=self.home)
+        self.home.save_revision().publish()
+
+        self.index = BlogIndexPage(title="Blog", slug=f"blog-{uuid.uuid4().hex[:8]}")
+        self.home.add_child(instance=self.index)
+        self.index.save_revision().publish()
+
+        admin_perm = Permission.objects.get(codename="access_admin")
+
+        self.user = get_user_model().objects.create_user(
+            username="editor", email="editor@example.com", password="x", is_staff=True, is_superuser=True
+        )
+        self.user.user_permissions.add(admin_perm)
+        self.user.save()
+
+    def _create_draft_page(self):
+        page = BlogPage(
+            title="Draft",
+            slug=f"draft-{uuid.uuid4().hex[:8]}",
+            body=[("rich_text", "<p>hello</p>")],
+        )
+        self.index.add_child(instance=page)
+        page.save_revision()  # keep as draft
+        return page
+
+    @mock.patch("blog.views.review_blog_content", return_value="拙者のレビューでござる")
+    def test_returns_review_for_editable_page(self, mock_review):
+        page = self._create_draft_page()
+        self.client.force_login(self.user)
+
+        response = self.client.post(f"/admin/api/draft-review/{page.id}/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["review"], "拙者のレビューでござる")
+        mock_review.assert_called_once()
+
+    def test_forbids_user_without_edit_permission(self):
+        page = self._create_draft_page()
+        viewer = get_user_model().objects.create_user(
+            username="viewer", password="x", is_staff=True
+        )
+        viewer.user_permissions.add(Permission.objects.get(codename="access_admin"))
+        viewer.save()
+        self.client.force_login(viewer)
+
+        response = self.client.post(f"/admin/api/draft-review/{page.id}/")
+
+        self.assertEqual(response.status_code, 403)
 
 
 class AuthAdapterTests(TestCase):

@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700&display=swap');
+
+:root {
+    --w-color-primary: #6AC15D;
+    --w-color-primary-200: #4a8c40;
+    /* Darker green for hover/active states */
+    --w-color-secondary: #6AC15D;
+    --w-color-text-label: #333;
+    --w-color-text-meta: #666;
+    --w-font-sans: 'Zen Maru Gothic', sans-serif;
+}
+
+body.wagtail {
+    background-color: #fefbf6;
+    font-family: var(--w-font-sans);
+    color: #333;
+}
+
+/* Sidebar: Neutral Dark for guaranteed readability */
+.wagtail-sidebar {
+    background-color: #222;
+    color: #fff;
+}
+
+.sidebar-menu-item__link {
+    color: #ddd;
+    opacity: 1;
+    font-weight: 500;
+}
+
+.sidebar-menu-item--active .sidebar-menu-item__link,
+.sidebar-menu-item__link:hover {
+    background-color: #6AC15D;
+    /* Green accent */
+    color: #fff;
+    font-weight: 700;
+}
+
+/* Button overrides */
+.button.button-secondary {
+    background-color: #fff;
+    border: 2px solid #6AC15D;
+    color: #6AC15D;
+    font-weight: bold;
+}
+
+.button.button-secondary:hover {
+    background-color: #6AC15D;
+    border-color: #6AC15D;
+    color: #fff;
+}
+
+/* Branding Area */
+.sidebar-branding {
+    background-color: #222 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+.sidebar-branding__logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.sidebar-branding__label {
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-left: 10px;
+    display: block;
+    /* Ensure it's visible */
+}
+
+/* General Text Readability */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #333;
+    font-weight: 700;
+}
+
+/* Header */
+header {
+    background-color: #fefbf6;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+/* Modal customization */
+.modal-content {
+    background-color: #fefbf6;
+    border-radius: 8px;
+}

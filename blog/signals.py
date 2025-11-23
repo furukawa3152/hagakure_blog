@@ -16,16 +16,22 @@ def notify_slack_on_publish(sender, instance, **kwargs):
         author_name = "管理者"  # デフォルト値
         if hasattr(instance, 'owner') and instance.owner:
             author_name = instance.owner.get_full_name() or instance.owner.username
-        
-        # スプレッドシートにログ記録（重複チェックあり）
-        log_to_sheet(author_name, instance.title, content, instance.full_url)
-        
-        # Slackレビュー通知
-        review = review_blog_content(content)
-        text = (
-            f"Scrollに新しい記事が公開されたでござる！\n"
-            f"タイトル: {instance.title}\n"
-            f"URL: {instance.full_url}\n\n"
-            f"拙者がレビューした内容でござる。\n{review}"
-        )
-        send_slack_notification(text)
+
+        # スプレッドシートにログ記録（失敗は握りつぶして公開を継続）
+        try:
+            log_to_sheet(author_name, instance.title, content, instance.full_url)
+        except Exception:
+            pass
+
+        # Slackレビュー通知（失敗は握りつぶして公開を継続）
+        try:
+            review = review_blog_content(content)
+            text = (
+                f"Scrollに新しい記事が公開されたでござる！\n"
+                f"タイトル: {instance.title}\n"
+                f"URL: {instance.full_url}\n\n"
+                f"拙者がレビューした内容でござる。\n{review}"
+            )
+            send_slack_notification(text)
+        except Exception:
+            pass

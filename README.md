@@ -60,6 +60,11 @@ Wagtail 6/Django 4.2 で動く HAGAKUREプログラミング塾のブログサ�
   - 記事詳細: 巻物の布地背景＋和紙パネルの上にサムネイル、タグバッジ、日付、著者情報、本文を配置。下部に著者プロフィールと「いいね」を配置。
   - モバイル対応: 768px/470px/440pxブレークポイントで余白とカラム数を調整。
 
+## LLM設定メモ
+- APIキー: プロジェクトルートの `env` / `.env`、または `mysite/settings/env` に `OPENAI_API_KEY=<あなたのキー>` を記載（`blog/utils/openai_review.py` と `blog/utils/sheet_logger.py` が読み込み）。  
+- システムプロンプト: 管理画面AIレビューのキャラ/口調は `blog/utils/openai_review.py` の `review_blog_content()` 内の system メッセージで定義。変更したい場合はここを編集。  
+- 動作確認: 管理画面のページ編集画面で「下書きをAIレビュー」→ モーダル内「改善案を取得」を押すと、現在の設定でLLMが呼ばれる。  
+
 ## セットアップ（ローカル開発）
 1) Python 3.12 系を用意し、`pip install -r requirements.txt` を実行。  
 2) ルートに `.env` か `env` を置き、少なくとも以下を設定  

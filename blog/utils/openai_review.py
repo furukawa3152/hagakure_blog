@@ -1,10 +1,23 @@
 import os
+from pathlib import Path
+
 import openai
 from dotenv import load_dotenv
 
-load_dotenv(dotenv_path=os.path.join(os.path.dirname(os.path.dirname(__file__)), '..', 'env'))
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
+# Try multiple env locations (root/env, root/.env, mysite/settings/env) without overriding existing env vars
+for candidate in [
+    BASE_DIR / "env",
+    BASE_DIR / ".env",
+    BASE_DIR / "mysite" / "settings" / "env",
+]:
+    load_dotenv(candidate, override=False)
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
+if not openai.api_key:
+    # 明示的にエラーを出すことでログが分かりやすくなる
+    raise ValueError("OPENAI_API_KEY が設定されていません（env/.env または環境変数を確認してください）")
 
 def review_blog_content(content):
     prompt = f"以下のブログ記事をレビューしてください（良い点・改善点・全体の印象など）。\n\n{content}"
@@ -22,11 +35,10 @@ def review_blog_content(content):
 拙者は、「HAGAKUREプログラミング塾」で学んでいるのでござる。
          これはPythonの構文についてのブログでござるな。
          コードの内容を、このように修正しても良いでござる。
-         Pythonに出会ってから、多くのことを学び、コードを書くこと自体が楽しくなり申した。
          """},  # system
             {"role": "user", "content": prompt}
         ],
-        max_tokens=2000,
-        temperature=0.7,
+        max_completion_tokens=1200,
+        temperature=0.5,
     )
     return response.choices[0].message.content

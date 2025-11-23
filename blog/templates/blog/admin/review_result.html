@@ -1,0 +1,19 @@
+{% load i18n wagtailadmin_tags %}
+
+{% include "wagtailadmin/shared/header.html" with title="AIレビュー結果" icon="doc-full" %}
+
+<div class="nice-padding">
+    <div class="help-block help-info">
+        <p>HAGAKURE君によるレビュー結果です。</p>
+    </div>
+
+    <div style="background: #fff; padding: 20px; border-radius: 8px; border: 1px solid #e6e6e6; white-space: pre-wrap; line-height: 1.6;">
+        {{ review_result }}
+    </div>
+
+    <div class="row" style="margin-top: 20px;">
+        <div class="col">
+            <button type="button" class="button button-secondary" data-micromodal-close>閉じる</button>
+        </div>
+    </div>
+</div>

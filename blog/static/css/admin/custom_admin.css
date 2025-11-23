@@ -1,0 +1,91 @@
+/* Scrollトーンに合わせつつ視認性を優先した配色 */
+:root {
+    --w-color-primary: #d7b949;
+    --w-color-primary-500: #d7b949;
+    --w-color-primary-600: #bb9f3a;
+    --w-color-surface: #f9f4ea;
+    --w-color-bg: #f9f4ea;
+    --w-text-color: #4a3f39;
+}
+
+body,
+.w-body {
+    background: #f9f4ea;
+    color: var(--w-text-color);
+}
+
+.w-header,
+.sidebar,
+.w-slimbar {
+    background: linear-gradient(90deg, #ffffff, #f2eadc);
+    color: var(--w-text-color);
+}
+
+.sidebar .menu-item,
+.sidebar .w-menuitem {
+    color: var(--w-text-color);
+}
+
+.sidebar .w-menuitem:hover,
+.sidebar .w-menuitem:focus,
+.sidebar .w-menuitem:active {
+    background: rgba(215, 185, 73, 0.15);
+}
+
+.w-breadcrumb__link,
+.w-breadcrumb__link:visited,
+.w-breadcrumb__link:hover {
+    color: var(--w-text-color);
+}
+
+.w-breadcrumb__item + .w-breadcrumb__item::before {
+    color: #8f7f77;
+}
+
+.w-button,
+.button {
+    border-radius: 999px;
+}
+
+.button,
+.w-button {
+    background: #ffffff;
+    color: var(--w-text-color);
+    border-color: #e3d7c4;
+}
+
+.button.button-secondary,
+.w-button.button-secondary {
+    background: #ffffff;
+    color: var(--w-text-color);
+}
+
+.w-panel,
+.w-panel__wrapper,
+.w-header__content {
+    background: #ffffff;
+}
+
+.w-panel__wrapper {
+    border: 1px solid #e8dece;
+    border-radius: 12px;
+}
+
+/* WagtailロゴをScrollロゴへ差し替え */
+.w-app-logo svg,
+.sidebar-branding__logo svg {
+    display: none;
+}
+
+.w-app-logo::before,
+.sidebar-branding__logo::before {
+    content: "";
+    display: inline-block;
+    width: 120px;
+    height: 40px;
+    background: url("/static/image/base/scroll_logo.png") center/contain no-repeat;
+}
+
+.sidebar-branding__label {
+    color: var(--w-text-color);
+}

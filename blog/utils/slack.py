@@ -1,15 +1,24 @@
+import logging
 import os
+from pathlib import Path
+
 from dotenv import load_dotenv
 import requests
 
-# プロジェクトのルートに.envまたはenvファイルがある場合
-load_dotenv(dotenv_path=os.path.join(os.path.dirname(os.path.dirname(__file__)), '..', 'env'))
+logger = logging.getLogger(__name__)
+
+# プロジェクトのルートとutils直下の.envを順に読み込む
+BASE_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = BASE_DIR.parent.parent
+load_dotenv(PROJECT_ROOT / ".env")
+load_dotenv(BASE_DIR / ".env")
 
 SLACK_WEBHOOK_URL = os.getenv("SLACK_WEBHOOK_URL")
 
 def send_slack_notification(text):
     if not SLACK_WEBHOOK_URL:
-        raise ValueError("SLACK_WEBHOOK_URLが設定されていません")
+        logger.warning("SLACK_WEBHOOK_URLが設定されていないためSlack通知をスキップしました")
+        return
     payload = {"text": text}
     response = requests.post(SLACK_WEBHOOK_URL, json=payload)
     response.raise_for_status()

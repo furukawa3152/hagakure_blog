@@ -1,14 +1,28 @@
 import os
-import openai
+import logging
+from pathlib import Path
+
 from dotenv import load_dotenv
+from openai import OpenAI
 
-load_dotenv(dotenv_path=os.path.join(os.path.dirname(os.path.dirname(__file__)), '..', 'env'))
+logger = logging.getLogger(__name__)
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
+# Try loading .env from project root and this utils directory (local dev use-case)
+BASE_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = BASE_DIR.parent.parent
+load_dotenv(PROJECT_ROOT / ".env")
+load_dotenv(BASE_DIR / ".env")
+
+_api_key = os.getenv("OPENAI_API_KEY")
+_client = OpenAI(api_key=_api_key) if _api_key else None
 
 def review_blog_content(content):
+    if not _client:
+        logger.error("OPENAI_API_KEYが設定されていません")
+        raise RuntimeError("OPENAI_API_KEYが設定されていません")
+
     prompt = f"以下のブログ記事をレビューしてください（良い点・改善点・全体の印象など）。\n\n{content}"
-    response = openai.chat.completions.create(
+    response = _client.chat.completions.create(
         model="gpt-4.1-mini",
         messages=[
             {"role": "system", "content": """ 

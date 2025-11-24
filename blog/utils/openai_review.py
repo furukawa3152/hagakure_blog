@@ -1,27 +1,18 @@
 import os
-from pathlib import Path
-
 import openai
 from dotenv import load_dotenv
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
-
-# Try multiple env locations (root/env, root/.env, mysite/settings/env) without overriding existing env vars
-for candidate in [
-    BASE_DIR / "env",
-    BASE_DIR / ".env",
-    BASE_DIR / "mysite" / "settings" / "env",
-]:
-    load_dotenv(candidate, override=False)
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(os.path.dirname(__file__)), '..', 'env'))
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
-if not openai.api_key:
-    # 明示的にエラーを出すことでログが分かりやすくなる
-    raise ValueError("OPENAI_API_KEY が設定されていません（env/.env または環境変数を確認してください）")
 
 def review_blog_content(content):
+    if not _client:
+        logger.error("OPENAI_API_KEYが設定されていません")
+        raise RuntimeError("OPENAI_API_KEYが設定されていません")
+
     prompt = f"以下のブログ記事をレビューしてください（良い点・改善点・全体の印象など）。\n\n{content}"
-    response = openai.chat.completions.create(
+    response = _client.chat.completions.create(
         model="gpt-4.1-mini",
         messages=[
             {"role": "system", "content": """ 

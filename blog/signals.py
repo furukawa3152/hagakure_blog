@@ -17,8 +17,9 @@ def notify_slack_on_publish(sender, instance, **kwargs):
         if hasattr(instance, "owner") and instance.owner:
             author_name = instance.owner.get_full_name() or instance.owner.username
 
-        # スプレッドシートにログ記録（重複チェックあり）
-        log_to_sheet(author_name, instance.title, content, instance.full_url)
+        # スプレッドシートにログ記録（重複チェックあり）。要約末尾にブログタグを#付きで付与
+        tag_names = [t.name for t in instance.tags.all()]
+        log_to_sheet(author_name, instance.title, content, instance.full_url, tags=tag_names)
 
         # AIレビュー & Slack通知
         review = review_blog_content(content)

@@ -36,7 +36,14 @@ def generate_hagakure_summary(content):
     return response.choices[0].message.content.strip()
 
 
-def log_to_sheet(author_name, post_title, content, post_url):
+def _format_tags_for_x(tags):
+    """ブログタグをX投稿用のハッシュタグ形式（スペース区切り）に変換"""
+    if not tags:
+        return ""
+    return " " + " ".join("#" + str(t).replace(" ", "") for t in tags if t)
+
+
+def log_to_sheet(author_name, post_title, content, post_url, tags=None):
     """
     log_for_xシートにブログ投稿をログ記録
     
@@ -45,6 +52,7 @@ def log_to_sheet(author_name, post_title, content, post_url):
         post_title: 投稿タイトル
         content: ブログ本文
         post_url: ブログのURL
+        tags: ブログに付与されたタグ名のリスト（省略時は要約のみ、X用ハッシュタグは付与しない）
     
     Returns:
         bool: 記録に成功したか（重複の場合はFalse）
@@ -78,6 +86,9 @@ def log_to_sheet(author_name, post_title, content, post_url):
         
         # 重複がない場合、HAGAKURE君の一言を生成
         summary = generate_hagakure_summary(content)
+        # 要約の最後にX投稿用のハッシュタグをスペース区切りで付与
+        if tags:
+            summary = summary + _format_tags_for_x(tags)
         
         # 現在日時を取得
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")

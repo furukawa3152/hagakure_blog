@@ -197,12 +197,17 @@ body {
 .article-actions {
     margin: 32px 0;
     display: flex;
+    justify-content: flex-start;
     column-gap: 16px;
 }
 
 .article_like {
     display: flex;
     align-items: center;
+    justify-content: center;
+    column-gap: 14px;
+    position: relative;
+    min-height: 94px;
 }
 
 .article_like > button {
@@ -210,35 +215,218 @@ body {
     border: none;
 }
 
+.likePrompt {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 36px;
+    z-index: 2;
+    width: min(132px, calc(100vw - 64px));
+    padding: 7px 8px;
+    border: 2px solid #edcf3b;
+    border-radius: 8px;
+    background: #fffdf7;
+    box-shadow: 0 8px 18px rgba(98, 86, 81, 0.14);
+    color: #625651;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.35;
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, 8px) scale(0.98);
+    transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+}
+
+.likePrompt::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -8px;
+    width: 12px;
+    height: 12px;
+    border-right: 2px solid #edcf3b;
+    border-bottom: 2px solid #edcf3b;
+    background: #fffdf7;
+    transform: translateX(-50%) rotate(45deg);
+}
+
+.likePrompt--visible {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+}
+
 .likeButton {
+    width: 72px;
+    height: 72px;
+    padding: 0;
+    display: grid;
+    place-items: center;
+    position: relative;
+    overflow: visible;
     cursor: pointer;
-    transition: transform 0.15s ease-out;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 35% 28%, #fff 0 14%, rgba(255, 255, 255, 0) 15%),
+        linear-gradient(145deg, #fff4f5 0%, #ffd1d7 54%, #fb737d 100%);
+    box-shadow:
+        0 10px 18px rgba(251, 115, 125, 0.24),
+        inset 0 -4px 0 rgba(184, 54, 74, 0.16);
+    transform: translateZ(0);
+    transition: transform 0.14s ease-out, box-shadow 0.14s ease-out;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .likeButton:active {
-    transform: scale(0.92);
+    transform: scale(0.9);
+    box-shadow:
+        0 5px 12px rgba(251, 115, 125, 0.22),
+        inset 0 3px 0 rgba(184, 54, 74, 0.12);
 }
 
-/* クリック時の即時リアクションアニメーション */
+.likeButton:focus-visible {
+    outline: 3px solid #edcf3b;
+    outline-offset: 4px;
+}
+
+.likeButton--invite {
+    animation: likeInvite 1.35s ease-in-out infinite;
+}
+
 .likeButton.likeButton--react {
-    animation: likePop 0.45s ease-out;
+    animation: likePop 0.4s ease-out;
 }
 
 @keyframes likePop {
     0%   { transform: scale(1); }
-    25%  { transform: scale(1.35); }
-    50%  { transform: scale(1.15); }
-    75%  { transform: scale(1.25); }
+    36%  { transform: scale(1.26) rotate(-4deg); }
+    68%  { transform: scale(0.96) rotate(3deg); }
     100% { transform: scale(1); }
 }
 
+@keyframes likeInvite {
+    0%, 100% { transform: scale(1); }
+    45% { transform: scale(1.08); }
+}
+
 .likeButton > svg {
-    display: flex;
-    align-items: center;
+    width: 52px;
+    height: 52px;
+    display: block;
+    position: relative;
+    z-index: 1;
+    filter: drop-shadow(0 3px 2px rgba(184, 54, 74, 0.18));
+}
+
+.likeButton > svg path {
+    fill: #f7355f;
+}
+
+.likeButton__shine {
+    position: absolute;
+    top: 13px;
+    left: 17px;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.92);
+}
+
+.likeParticle {
+    position: absolute;
+    left: 50%;
+    top: 28%;
+    z-index: 0;
+    color: #f7355f;
+    font-size: 20px;
+    font-weight: 700;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    animation: likeFloat 1.60s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+}
+
+@keyframes likeFloat {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -28%) scale(0.72) rotate(0deg);
+    }
+    18% {
+        opacity: 1;
+        transform: translate(-56%, -44%) scale(1) rotate(-13deg);
+    }
+    46% {
+        transform: translate(-39%, -72px) scale(1.18) rotate(12deg);
+    }
+    72% {
+        transform: translate(-61%, -102px) scale(1.08) rotate(-8deg);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-43%, -122px) scale(1.28) rotate(7deg);
+    }
+}
+
+.likeMeter {
+    display: grid;
+    min-width: 48px;
 }
 
 #likeCount {
-    font-size: 20px;
+    color: #f7355f;
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+
+.likeStreak {
+    position: absolute;
+    top: 6px;
+    right: -18px;
+    min-width: 44px;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: #edcf3b;
+    color: #625651;
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 1;
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(8px) scale(0.9);
+}
+
+.likeStreak--visible {
+    animation: likeStreakPop 0.72s ease-out forwards;
+}
+
+@keyframes likeStreakPop {
+    0% {
+        opacity: 0;
+        transform: translateY(8px) scale(0.9);
+    }
+    24% {
+        opacity: 1;
+        transform: translateY(-2px) scale(1.06);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-18px) scale(1);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .likePrompt,
+    .likeButton,
+    .likeParticle,
+    .likeStreak {
+        transition: none;
+        animation: none;
+    }
+
+    .likeParticle {
+        display: none;
+    }
 }
 
 .article-actions > button {

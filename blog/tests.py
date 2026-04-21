@@ -61,9 +61,9 @@ class BlogPageModelTests(TestCase):
     """BlogPage のユーティリティ（slug固定・検索・いいね重複防止）を検証"""
     def setUp(self):
         self._signal_patchers = [
-            mock.patch("blog.signals.review_blog_content", return_value=""),
-            mock.patch("blog.signals.log_to_sheet", return_value=True),
-            mock.patch("blog.signals.send_slack_notification", return_value=None),
+            mock.patch("blog.signals.review_blog_content", return_value="", create=True),
+            mock.patch("blog.signals.log_to_sheet", return_value=True, create=True),
+            mock.patch("blog.signals.send_slack_notification", return_value=None, create=True),
         ]
         for patcher in self._signal_patchers:
             patcher.start()
@@ -77,6 +77,12 @@ class BlogPageModelTests(TestCase):
         self.index = BlogIndexPage(title="Blog", slug=f"blog-{uuid.uuid4().hex[:8]}")
         self.home.add_child(instance=self.index)
         self.index.save_revision().publish()
+
+    def _create_live_blog_page(self, title="Like me"):
+        page = BlogPage(title=title, slug=f"page-{uuid.uuid4().hex[:8]}", body=[])
+        self.index.add_child(instance=page)
+        page.save_revision().publish()
+        return page
 
     def test_slug_locked_to_id_on_create(self):
         page = BlogPage(title="Test page", slug="temp", body=[])
@@ -106,14 +112,47 @@ class BlogPageModelTests(TestCase):
         self.assertNotIn(other, blogpages)
 
     def test_like_unique_per_ip(self):
-        page = BlogPage(title="Like me", slug="like-me", body=[])
-        self.index.add_child(instance=page)
-        page.save_revision().publish()
+        page = self._create_live_blog_page()
 
         Like.objects.create(blogpage=page, ip_address="127.0.0.1", count=1)
 
         with self.assertRaises(IntegrityError):
             Like.objects.create(blogpage=page, ip_address="127.0.0.1", count=1)
+
+    def test_like_api_accepts_batched_amount(self):
+        page = self._create_live_blog_page()
+
+        response = self.client.post(
+            f"/like/{page.id}/",
+            data='{"amount": 5}',
+            content_type="application/json",
+            REMOTE_ADDR="127.0.0.9",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["likes"], 5)
+        self.assertEqual(
+            Like.objects.get(blogpage=page, ip_address="127.0.0.9").count,
+            5,
+        )
+
+    def test_like_api_caps_batched_amount_and_total_count(self):
+        page = self._create_live_blog_page()
+        Like.objects.create(blogpage=page, ip_address="127.0.0.9", count=990)
+
+        response = self.client.post(
+            f"/like/{page.id}/",
+            data='{"amount": 200}',
+            content_type="application/json",
+            REMOTE_ADDR="127.0.0.9",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["likes"], 999)
+        self.assertEqual(
+            Like.objects.get(blogpage=page, ip_address="127.0.0.9").count,
+            999,
+        )
 
 
 class DraftReviewApiTests(TestCase):

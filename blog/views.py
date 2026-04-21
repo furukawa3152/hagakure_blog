@@ -1,8 +1,11 @@
+import json
 import logging
 
 from django.contrib.auth.decorators import login_required
+from django.db.models import F
+from django.db.models.functions import Least
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_http_methods, require_POST
 
 from blog.utils.openai_review import review_blog_content
@@ -11,16 +14,34 @@ from .models import BlogPage, Like
 logger = logging.getLogger(__name__)
 
 
+def _get_like_amount(request):
+    if not request.body:
+        return 1
+
+    try:
+        payload = json.loads(request.body.decode("utf-8") or "{}")
+    except json.JSONDecodeError:
+        return 1
+
+    try:
+        amount = int(payload.get("amount", 1))
+    except (TypeError, ValueError):
+        amount = 1
+
+    return max(1, min(amount, 30))
+
+
 @require_http_methods(["POST"])
 def like_blogpage(request, page_id):
     blogpage = get_object_or_404(BlogPage, id=page_id)
     ip_address = request.META.get('REMOTE_ADDR')
+    amount = _get_like_amount(request)
 
-    like, created = Like.objects.get_or_create(blogpage=blogpage, ip_address=ip_address)
+    like, _ = Like.objects.get_or_create(blogpage=blogpage, ip_address=ip_address)
 
-    if like.count < 999:
-        like.count += 1
-        like.save()
+    Like.objects.filter(pk=like.pk, count__lt=999).update(
+        count=Least(F("count") + amount, 999)
+    )
 
     return JsonResponse({'likes': blogpage.get_like_count()})
 

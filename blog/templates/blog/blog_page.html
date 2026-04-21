@@ -19,19 +19,6 @@
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/blog_page.css' %}">
-<style>
-  /* いいねボタン押下時の即時リアクション（テンプレート内で確実に適用） */
-  .likeButton { cursor: pointer; }
-  .likeButton:active { transform: scale(0.92); }
-  .likeButton.likeButton--react { animation: likePop 0.45s ease-out; }
-  @keyframes likePop {
-    0%   { transform: scale(1); }
-    25%  { transform: scale(1.35); }
-    50%  { transform: scale(1.15); }
-    75%  { transform: scale(1.25); }
-    100% { transform: scale(1); }
-  }
-</style>
 <div class="container">
   <div class="scroll">
     <img class="himo" src="{% static 'images/blog_page/string_x4.png' %}" alt="紐">
@@ -81,18 +68,25 @@
             {{ page.body }}
           </div>
 
-          <div class="article-actions">
+          <div class="article-actions" data-like-actions>
             <!-- お気に入りボタン -->
             <div class="article_like">
               {% csrf_token %}
-              <button class="likeButton" data-page-id="{{ page.id }}">
+              <div class="likePrompt" data-like-prompt role="status" aria-live="polite">
+                ハートを押して<br>応援してね
+              </div>
+              <button class="likeButton" data-page-id="{{ page.id }}" type="button" aria-label="この記事にハートを送る">
                 <svg width="53" height="51" viewBox="0 0 53 51" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
                     d="M33.925 10C31.054 10 28.2985 11.3684 26.5 13.5308C24.7015 11.3684 21.946 10 19.075 10C13.993 10 10 14.0883 10 19.2916C10 25.6774 15.61 30.8807 24.1075 38.7869L26.5 41L28.8925 38.77C37.39 30.8807 43 25.6774 43 19.2916C43 14.0883 39.007 10 33.925 10ZM26.665 36.2698L26.5 36.4387L26.335 36.2698C18.481 28.9886 13.3 24.1738 13.3 19.2916C13.3 15.9128 15.775 13.3787 19.075 13.3787C21.616 13.3787 24.091 15.0512 24.9655 17.3657H28.051C28.909 15.0512 31.384 13.3787 33.925 13.3787C37.225 13.3787 39.7 15.9128 39.7 19.2916C39.7 24.1738 34.519 28.9886 26.665 36.2698Z"
                     fill="#FB737D" />
                 </svg>
+                <span class="likeButton__shine" aria-hidden="true"></span>
               </button>
-              <span id="likeCount">{{ page.get_like_count }}</span>
+              <span class="likeMeter" aria-live="polite">
+                <span id="likeCount" data-like-count>{{ page.get_like_count }}</span>
+              </span>
+              <span class="likeStreak" data-like-streak aria-hidden="true">+1</span>
             </div>
             <!-- シェアボタン -->
             <!-- <button class="share">
@@ -124,40 +118,136 @@
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll('.likeButton').forEach(button => {
-    button.addEventListener('click', function() {
-      const btn = this;
-      const pageId = btn.dataset.pageId;
-      const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-      const likeCountSpan = btn.closest('.article-actions').querySelector('#likeCount');
+(() => {
+  const actions = document.querySelector('[data-like-actions]');
+  if (!actions) return;
 
-      // 押した瞬間に即座にリアクションアニメーション
-      btn.classList.remove('likeButton--react');
-      btn.offsetHeight; // reflow でアニメーション再実行
-      btn.classList.add('likeButton--react');
-      btn.addEventListener('animationend', function onEnd() {
-        btn.classList.remove('likeButton--react');
-        btn.removeEventListener('animationend', onEnd);
-      }, { once: true });
+  const button = actions.querySelector('.likeButton');
+  const countEl = actions.querySelector('[data-like-count]');
+  const prompt = actions.querySelector('[data-like-prompt]');
+  const streak = actions.querySelector('[data-like-streak]');
+  const token = actions.querySelector('[name=csrfmiddlewaretoken]')?.value;
+  if (!button || !countEl || !token) return;
 
-      fetch(`/like/${pageId}/`, {
+  const pageId = button.dataset.pageId;
+  let shownPrompt = false;
+  let pending = 0;
+  let displayCount = Number(countEl.textContent) || 0;
+  let streakCount = 0;
+  let flushTimer = 0;
+  let promptTimer = 0;
+  let streakResetTimer = 0;
+  let isSending = false;
+
+  const showPrompt = () => {
+    if (shownPrompt || !prompt) return;
+    shownPrompt = true;
+    prompt.classList.add('likePrompt--visible');
+    button.classList.add('likeButton--invite');
+    promptTimer = window.setTimeout(() => {
+      prompt.classList.remove('likePrompt--visible');
+      button.classList.remove('likeButton--invite');
+    }, 5200);
+  };
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        showPrompt();
+        observer.disconnect();
+      }
+    }, { threshold: 0.45 });
+    observer.observe(actions);
+  } else {
+    showPrompt();
+  }
+
+  const burst = () => {
+    const particle = document.createElement('span');
+    particle.className = 'likeParticle';
+    particle.textContent = '♥';
+    button.appendChild(particle);
+    particle.addEventListener('animationend', () => particle.remove(), { once: true });
+  };
+
+  const scheduleFlush = (delay = 420) => {
+    if (flushTimer || isSending) return;
+    flushTimer = window.setTimeout(flushLikes, delay);
+  };
+
+  async function flushLikes() {
+    flushTimer = 0;
+    if (!pending || isSending) return;
+
+    isSending = true;
+    const amount = Math.min(pending, 30);
+    let retrySlowly = false;
+    pending -= amount;
+
+    try {
+      const response = await fetch(`/like/${pageId}/`, {
         method: 'POST',
         headers: {
-          'X-CSRFToken': csrfToken,
+          'X-CSRFToken': token,
           'Content-Type': 'application/json',
         },
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (likeCountSpan) {
-          likeCountSpan.textContent = data.likes;
+        body: JSON.stringify({ amount }),
+        keepalive: true,
+      });
+      if (response.ok) {
+        const data = await response.json();
+        if (Number.isFinite(data.likes)) {
+          displayCount = data.likes + pending;
+          countEl.textContent = displayCount;
         }
-      })
-      .catch(error => console.error('Error:', error));
-    });
+      } else {
+        pending += amount;
+        retrySlowly = true;
+      }
+    } catch (error) {
+      pending += amount;
+      retrySlowly = true;
+    } finally {
+      isSending = false;
+      if (pending) scheduleFlush(retrySlowly ? 1200 : 180);
+    }
+  }
+
+  button.addEventListener('click', () => {
+    window.clearTimeout(promptTimer);
+    prompt?.classList.remove('likePrompt--visible');
+    button.classList.remove('likeButton--invite');
+
+    pending += 1;
+    streakCount += 1;
+    displayCount += 1;
+    countEl.textContent = displayCount;
+    window.clearTimeout(streakResetTimer);
+    streakResetTimer = window.setTimeout(() => {
+      streakCount = 0;
+    }, 1200);
+
+    button.classList.remove('likeButton--react');
+    window.requestAnimationFrame(() => button.classList.add('likeButton--react'));
+
+    if (streak) {
+      streak.textContent = `+${streakCount}`;
+      streak.classList.remove('likeStreak--visible');
+      window.requestAnimationFrame(() => streak.classList.add('likeStreak--visible'));
+    }
+
+    burst();
+    scheduleFlush();
   });
-});
+
+  window.addEventListener('pagehide', () => {
+    if (flushTimer) {
+      window.clearTimeout(flushTimer);
+      flushTimer = 0;
+    }
+    flushLikes();
+  });
+})();
 
 </script>
 {% endblock %}

@@ -74,7 +74,7 @@ body {
   text-decoration: none;
 }
 .article:hover {
-  animation: card-swing 1.45s ease-in-out;
+  animation: card-swing 1.8s ease-in-out;
 }
 
 @keyframes card-swing {
@@ -82,13 +82,13 @@ body {
     transform: rotate(0deg);
   }
   18% {
-    transform: rotate(4.8deg);
+    transform: rotate(6.5deg);
   }
   40% {
-    transform: rotate(-4.1deg);
+    transform: rotate(-5.4deg);
   }
   62% {
-    transform: rotate(2.6deg);
+    transform: rotate(3.4deg);
   }
   82% {
     transform: rotate(-1.4deg);

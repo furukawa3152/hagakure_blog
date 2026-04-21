@@ -45,6 +45,8 @@ body {
   background-image: url("/static/images/blog_index_page/article_bg.svg");
   border-radius: 20px 20px 0 0;
   position: relative;
+  transform-origin: 50% 0;
+  transition: transform 0.25s ease-out;
 }
 .article::before,
 .article::after {
@@ -71,9 +73,29 @@ body {
   color: #625651;
   text-decoration: none;
 }
-.article a:hover {
-  opacity: 0.7;
-  transition: ease-in-out 0.3s;
+.article:hover {
+  animation: card-swing 1.45s ease-in-out;
+}
+
+@keyframes card-swing {
+  0% {
+    transform: rotate(0deg);
+  }
+  18% {
+    transform: rotate(4.8deg);
+  }
+  40% {
+    transform: rotate(-4.1deg);
+  }
+  62% {
+    transform: rotate(2.6deg);
+  }
+  82% {
+    transform: rotate(-1.4deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
 }
 /* 記事_内枠 */
 .article_wrapper {

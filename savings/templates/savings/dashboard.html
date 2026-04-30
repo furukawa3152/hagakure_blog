@@ -1,0 +1,169 @@
+{% load static humanize %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>実質貯金</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'savings/css/dashboard.css' %}">
+  <script src="{% static 'savings/js/dashboard.js' %}" defer></script>
+</head>
+<body class="savings-app">
+  <main class="app-shell">
+    <header class="app-header">
+      <div class="app-title-row">
+        <p class="app-kicker">実質貯金</p>
+        {% if request.user.is_authenticated %}
+          <form action="{% url 'account_logout' %}" method="post">
+            {% csrf_token %}
+            <button class="auth-button" type="submit">ログアウト</button>
+          </form>
+        {% else %}
+          <a class="auth-button" href="{% url 'account_login' %}">ログイン</a>
+        {% endif %}
+      </div>
+      <div class="login-chip" aria-label="ログイン状態">
+        <span>{% if request.user.is_authenticated %}ログイン中{% else %}未ログイン{% endif %}</span>
+        <strong>{% if request.user.is_authenticated %}{{ request.user.get_full_name|default:request.user.username }}{% else %}ゲスト{% endif %}</strong>
+      </div>
+    </header>
+
+    {% if messages %}
+      <div class="message-modal" role="status" data-toast-modal>
+        {% for message in messages %}
+          <p class="message-card {{ message.tags }}">{{ message }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <nav class="tab-bar" role="tablist" aria-label="実質貯金メニュー">
+      <button class="tab-button is-active" type="button" role="tab" aria-selected="true" aria-controls="panel-save" data-tab-target="save">貯金</button>
+      <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="panel-reward" data-tab-target="reward">浪費</button>
+      <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="panel-history" data-tab-target="history">履歴</button>
+      <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="panel-guide" data-tab-target="guide">使い方</button>
+    </nav>
+
+    <section id="panel-save" class="tab-panel is-active" role="tabpanel" data-tab-panel="save">
+      <div class="balance-strip">
+        <span>現在の実質貯金残高</span>
+        <strong>{{ balance|intcomma }}円</strong>
+      </div>
+
+      <form class="action-panel save-panel" action="{% url 'savings:create_saving' %}" method="post">
+        {% csrf_token %}
+        {{ saving_form.non_field_errors }}
+        <label>
+          <span class="field-label">{{ saving_form.title.label }}</span>
+          {{ saving_form.title }}
+        </label>
+        <label>
+          <span class="field-label">{{ saving_form.category.label }}<span class="required-badge">必須</span></span>
+          {{ saving_form.category }}
+        </label>
+        <label>
+          <span class="field-label">{{ saving_form.amount.label }}<span class="required-badge">必須</span></span>
+          {{ saving_form.amount }}
+        </label>
+        <button class="primary-button" type="submit">我慢したことを記録</button>
+      </form>
+    </section>
+
+    <section id="panel-history" class="tab-panel" role="tabpanel" data-tab-panel="history" hidden>
+      <div class="history-section">
+        <h2>直近3件の実質貯金</h2>
+        {% for saving in recent_savings %}
+          <article class="history-item">
+            <div>
+              <span>{{ saving.get_category_display }} / {{ saving.avoided_on|date:"m.d" }}</span>
+              <h3>{{ saving.title|default:"名前なしの我慢" }}</h3>
+              <p>{{ saving.roast_text }}</p>
+            </div>
+            <div class="history-actions">
+              <strong>{{ saving.amount|intcomma }}円</strong>
+              <form action="{% url 'savings:delete_saving' saving.pk %}" method="post">
+                {% csrf_token %}
+                <button type="submit" aria-label="{{ saving.title|default:'名前なしの我慢' }}を削除">削除</button>
+              </form>
+            </div>
+          </article>
+        {% empty %}
+          <p class="empty-text">まだ記録がありません。</p>
+        {% endfor %}
+      </div>
+
+      <div class="history-section">
+        <h2>直近3件のいい浪費</h2>
+        {% for reward in recent_rewards %}
+          <article class="history-item reward-item">
+            <div>
+              <span>{{ reward.spent_on|date:"m.d" }}</span>
+              <h3>{{ reward.title }}</h3>
+            </div>
+            <div class="history-actions">
+              <strong>{{ reward.amount|intcomma }}円</strong>
+              <form action="{% url 'savings:delete_reward' reward.pk %}" method="post">
+                {% csrf_token %}
+                <button type="submit" aria-label="{{ reward.title }}を削除">削除</button>
+              </form>
+            </div>
+          </article>
+        {% empty %}
+          <p class="empty-text">まだ使い道がありません。</p>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section id="panel-reward" class="tab-panel" role="tabpanel" data-tab-panel="reward" hidden>
+      <div class="balance-strip reward-balance">
+        <span>現在の実質貯金残高</span>
+        <strong>{{ balance|intcomma }}円</strong>
+      </div>
+
+      <form class="action-panel reward-panel" action="{% url 'savings:create_reward' %}" method="post">
+        {% csrf_token %}
+        <div class="panel-heading">
+          <h2>満足する浪費</h2>
+          <p>貯めた分を納得できる使い道に回します。</p>
+        </div>
+        {{ reward_form.non_field_errors }}
+        <label>
+          <span class="field-label">{{ reward_form.title.label }}<span class="required-badge">必須</span></span>
+          {{ reward_form.title }}
+        </label>
+        <label>
+          <span class="field-label">{{ reward_form.amount.label }}<span class="required-badge">必須</span></span>
+          {{ reward_form.amount }}
+        </label>
+        <button class="primary-button reward-button" type="submit">使い道を記録</button>
+      </form>
+    </section>
+
+    <section id="panel-guide" class="tab-panel" role="tabpanel" data-tab-panel="guide" hidden>
+      <div class="guide-section">
+        <h2>実質貯金とは</h2>
+        <p>買わずに済んだ金額を、ただの節約ではなく「あとで満足できる浪費に使える残高」として見える化したものです。</p>
+      </div>
+      <div class="guide-section">
+        <h2>目的</h2>
+        <p>満足度の低い出費を減らし、その分のお金を本当に納得できる使い道へ回すための記録アプリです。</p>
+      </div>
+      <div class="guide-section">
+        <h2>使い方</h2>
+        <ol>
+          <li>買わずに済んだ出費を「貯金」タブで登録します。</li>
+          <li>浮いた金額が実質貯金残高に積み上がります。</li>
+          <li>満足できる使い道に回したら「浪費」タブで記録します。</li>
+          <li>「履歴」タブで直近の記録を確認できます。</li>
+        </ol>
+      </div>
+      <div class="guide-section">
+        <h2>考え方</h2>
+        <p>浪費を全部なくすためではなく、満足度の低い浪費を減らして、満足度の高い浪費に予算を寄せるために使います。</p>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

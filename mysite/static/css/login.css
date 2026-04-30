@@ -81,6 +81,15 @@ body {
     height: 25px;
 }
 
+.login-error {
+    margin: 12px 0 0;
+    color: #8d3328;
+    font-family: 'Zen Maru Gothic', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+}
+
 @media (max-width: 480px) {
     .login-container {
         width: 90%;

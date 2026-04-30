@@ -1,32 +1,32 @@
-from wagtail.signals import page_published
-from django.dispatch import receiver
-from blog.models import BlogPage
-from blog.utils.slack import send_slack_notification
-from blog.utils.openai_review import review_blog_content
-from blog.utils.sheet_logger import log_to_sheet
+# from wagtail.signals import page_published
+# from django.dispatch import receiver
+# from blog.models import BlogPage
+# # from blog.utils.slack import send_slack_notification
+# # from blog.utils.openai_review import review_blog_content
+# # from blog.utils.sheet_logger import log_to_sheet
 
-@receiver(page_published)
-def notify_slack_on_publish(sender, instance, **kwargs):
-    # 公開時にSlack通知・AIレビュー・スプレッドシート記録をまとめて実行
-    if isinstance(instance, BlogPage):
-        # 本文を取得（例：page.bodyがStreamFieldの場合はstrで変換）
-        content = str(instance.body)
+# @receiver(page_published)
+# def notify_slack_on_publish(sender, instance, **kwargs):
+#     # 公開時にSlack通知・AIレビュー・スプレッドシート記録をまとめて実行
+#     if isinstance(instance, BlogPage):
+#         # 本文を取得（例：page.bodyがStreamFieldの場合はstrで変換）
+#         content = str(instance.body)
 
-        # 投稿者名を取得（owner または revision.user から）
-        author_name = "管理者"  # デフォルト値
-        if hasattr(instance, "owner") and instance.owner:
-            author_name = instance.owner.get_full_name() or instance.owner.username
+#         # 投稿者名を取得（owner または revision.user から）
+#         author_name = "管理者"  # デフォルト値
+#         if hasattr(instance, "owner") and instance.owner:
+#             author_name = instance.owner.get_full_name() or instance.owner.username
 
-        # スプレッドシートにログ記録（重複チェックあり）。要約末尾にブログタグを#付きで付与
-        tag_names = [t.name for t in instance.tags.all()]
-        log_to_sheet(author_name, instance.title, content, instance.full_url, tags=tag_names)
+#         # スプレッドシートにログ記録（重複チェックあり）。要約末尾にブログタグを#付きで付与
+#         tag_names = [t.name for t in instance.tags.all()]
+#         log_to_sheet(author_name, instance.title, content, instance.full_url, tags=tag_names)
 
-        # AIレビュー & Slack通知
-        review = review_blog_content(content)
-        text = (
-            f"Scrollに新しい記事が公開されたでござる！\n"
-            f"タイトル: {instance.title}\n"
-            f"URL: {instance.full_url}\n\n"
-            f"拙者がレビューした内容でござる。\n{review}"
-        )
-        send_slack_notification(text)
+#         # AIレビュー & Slack通知
+#         review = review_blog_content(content)
+#         text = (
+#             f"Scrollに新しい記事が公開されたでござる！\n"
+#             f"タイトル: {instance.title}\n"
+#             f"URL: {instance.full_url}\n\n"
+#             f"拙者がレビューした内容でござる。\n{review}"
+#         )
+#         send_slack_notification(text)

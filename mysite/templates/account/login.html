@@ -1,0 +1,40 @@
+{% load static savings_auth %}
+{% google_oauth_configured as has_google_oauth %}
+{% dev_login_enabled as can_dev_login %}
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ログイン</title>
+  <link rel="stylesheet" href="{% static 'css/login.css' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="login-container">
+    <img src="{% static 'image/blog_login/scroll_logo.png' %}" alt="Scroll_ロゴ" class="logo">
+    <img src="{% static 'image/blog_login/hagakure_logo.png' %}" alt="HAGAKURE_ロゴ" class="logo">
+
+    {% if has_google_oauth %}
+      <form action="/accounts/google/login/{% if request.GET.next %}?next={{ request.GET.next|urlencode }}{% endif %}" method="post" class="google-login-form">
+        {% csrf_token %}
+        <button type="submit" class="google-login">
+          <img src="{% static 'image/blog_login/Google.png' %}" alt="Googleアイコン" class="google-icon">
+          Googleでログイン
+        </button>
+      </form>
+    {% elif can_dev_login %}
+      <form action="{% url 'savings:dev_login' %}" method="post" class="google-login-form">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.GET.next|default:'/savings/' }}">
+        <button type="submit" class="google-login">
+          開発用ログイン
+        </button>
+      </form>
+    {% else %}
+      <p class="login-error">Googleログイン設定が未設定です。</p>
+    {% endif %}
+  </div>
+</body>
+</html>

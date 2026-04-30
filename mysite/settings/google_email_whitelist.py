@@ -1,4 +1,3 @@
-import logging
 from django.core.cache import cache
 from mysite.settings import read_account_sheet                     # 既存モジュール
 
@@ -7,7 +6,10 @@ from mysite.settings import read_account_sheet                     # 既存モ�
 
 def get_allowed_emails():
     # Spreadsheetから最新の許可リストを都度取得（キャッシュなし）
-    emails = read_account_sheet.read_acount_list()
+    try:
+        emails = read_account_sheet.read_acount_list()
+    except (FileNotFoundError, OSError):
+        emails = []
     #if emails is None:
        # try:
             #emails = read_account_sheet.read_acount_list()

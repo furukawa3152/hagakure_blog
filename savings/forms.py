@@ -10,11 +10,12 @@ class HalfWidthAmountMixin:
         self.fields["amount"].required = True
         self.fields["amount"].widget = forms.TextInput(
             attrs={
-                "inputmode": "numeric",
+                "inputmode": "none",
                 "pattern": "[0-9]*",
                 "autocomplete": "off",
                 "placeholder": "例: 480",
                 "required": "required",
+                "readonly": "readonly",
             }
         )
 

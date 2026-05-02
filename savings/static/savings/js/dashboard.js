@@ -29,4 +29,28 @@ document.addEventListener("DOMContentLoaded", () => {
             toast.remove();
         });
     }
+
+    document.querySelectorAll("[data-amount-entry]").forEach((entry) => {
+        const input = entry.querySelector("input");
+        const keypadButtons = entry.querySelectorAll("[data-amount-key]");
+
+        keypadButtons.forEach((keyButton) => {
+            keyButton.addEventListener("click", () => {
+                const key = keyButton.dataset.amountKey;
+                const currentValue = input.value || "";
+
+                if (key === "clear") {
+                    input.value = "";
+                } else if (key === "backspace") {
+                    input.value = currentValue.slice(0, -1);
+                } else if (currentValue.length < 7) {
+                    const rawValue = `${currentValue}${key}`;
+                    const nextValue = rawValue.replace(/^0+(?=\d)/, "") || "0";
+                    input.value = nextValue.slice(0, 7);
+                }
+
+                input.dispatchEvent(new Event("input", { bubbles: true }));
+            });
+        });
+    });
 });

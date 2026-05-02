@@ -252,6 +252,44 @@ body.savings-app {
     margin: 0;
 }
 
+.amount-entry {
+    display: grid;
+    gap: 10px;
+}
+
+.amount-entry input[readonly] {
+    cursor: default;
+}
+
+.amount-keypad {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.amount-keypad button {
+    min-height: 52px;
+    border: 1px solid #c7b895;
+    border-radius: 8px;
+    background: #fffdf8;
+    color: var(--ink);
+    font: inherit;
+    font-size: 22px;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.amount-keypad button:active {
+    transform: translateY(1px);
+    background: #f3f8e9;
+}
+
+.amount-keypad .zero-key {
+    grid-column: span 4;
+    background: #f5fbf1;
+    color: var(--green-deep);
+}
+
 .primary-button {
     width: 100%;
     min-height: 52px;
@@ -489,5 +527,114 @@ body.savings-app {
 @media (max-width: 390px) {
     .tab-bar {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 520px) {
+    body.savings-app {
+        font-size: 14px;
+    }
+
+    .app-shell {
+        padding: 8px 10px 12px;
+    }
+
+    .app-header {
+        gap: 5px;
+        padding: 2px 0 6px;
+    }
+
+    .app-kicker {
+        font-size: 24px;
+        line-height: 1.05;
+    }
+
+    .auth-button {
+        min-height: 30px;
+        font-size: 11px;
+        padding: 0 8px;
+    }
+
+    .login-chip {
+        min-height: 28px;
+        padding: 5px 8px;
+    }
+
+    .login-chip span,
+    .login-chip strong {
+        font-size: 11px;
+    }
+
+    .tab-bar {
+        gap: 5px;
+        margin: 0 -1px 8px;
+        padding: 5px 1px;
+    }
+
+    .tab-button {
+        min-height: 34px;
+        border-radius: 7px;
+        font-size: 12px;
+    }
+
+    .tab-panel {
+        gap: 8px;
+    }
+
+    .balance-strip {
+        gap: 3px;
+        padding: 10px 12px;
+    }
+
+    .balance-strip span {
+        font-size: 12px;
+    }
+
+    .balance-strip strong {
+        font-size: 34px;
+    }
+
+    .action-panel {
+        gap: 7px;
+        padding: 10px;
+    }
+
+    .action-panel label {
+        gap: 4px;
+        font-size: 12px;
+    }
+
+    .required-badge {
+        min-height: 17px;
+        font-size: 10px;
+        padding: 0 7px;
+    }
+
+    .action-panel input,
+    .action-panel select {
+        min-height: 36px;
+        border-radius: 7px;
+        font-size: 14px;
+        padding: 7px 10px;
+    }
+
+    .amount-entry {
+        gap: 6px;
+    }
+
+    .amount-keypad {
+        gap: 5px;
+    }
+
+    .amount-keypad button {
+        min-height: 40px;
+        border-radius: 7px;
+        font-size: 19px;
+    }
+
+    .primary-button {
+        min-height: 42px;
+        border-radius: 7px;
+        font-size: 15px;
     }
 }

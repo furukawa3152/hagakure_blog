@@ -63,10 +63,27 @@
           <span class="field-label">{{ saving_form.category.label }}<span class="required-badge">必須</span></span>
           {{ saving_form.category }}
         </label>
-        <label>
-          <span class="field-label">{{ saving_form.amount.label }}<span class="required-badge">必須</span></span>
+        <div class="amount-entry" data-amount-entry>
+          <label>
+            <span class="field-label">{{ saving_form.amount.label }}<span class="required-badge">必須</span></span>
           {{ saving_form.amount }}
         </label>
+        <div class="amount-keypad" aria-label="浮いた金額入力">
+          <button type="button" data-amount-key="7">7</button>
+          <button type="button" data-amount-key="8">8</button>
+          <button type="button" data-amount-key="9">9</button>
+          <button type="button" data-amount-key="backspace">⌫</button>
+          <button type="button" data-amount-key="4">4</button>
+          <button type="button" data-amount-key="5">5</button>
+          <button type="button" data-amount-key="6">6</button>
+          <button type="button" data-amount-key="clear">C</button>
+          <button type="button" data-amount-key="1">1</button>
+          <button type="button" data-amount-key="2">2</button>
+          <button type="button" data-amount-key="3">3</button>
+          <button type="button" data-amount-key="00">00</button>
+          <button class="zero-key" type="button" data-amount-key="0">0</button>
+        </div>
+      </div>
         <button class="primary-button" type="submit">我慢したことを記録</button>
       </form>
     </section>
@@ -133,10 +150,27 @@
           <span class="field-label">{{ reward_form.title.label }}<span class="required-badge">必須</span></span>
           {{ reward_form.title }}
         </label>
-        <label>
-          <span class="field-label">{{ reward_form.amount.label }}<span class="required-badge">必須</span></span>
+        <div class="amount-entry" data-amount-entry>
+          <label>
+            <span class="field-label">{{ reward_form.amount.label }}<span class="required-badge">必須</span></span>
           {{ reward_form.amount }}
         </label>
+        <div class="amount-keypad" aria-label="使った金額入力">
+          <button type="button" data-amount-key="7">7</button>
+          <button type="button" data-amount-key="8">8</button>
+          <button type="button" data-amount-key="9">9</button>
+          <button type="button" data-amount-key="backspace">⌫</button>
+          <button type="button" data-amount-key="4">4</button>
+          <button type="button" data-amount-key="5">5</button>
+          <button type="button" data-amount-key="6">6</button>
+          <button type="button" data-amount-key="clear">C</button>
+          <button type="button" data-amount-key="1">1</button>
+          <button type="button" data-amount-key="2">2</button>
+          <button type="button" data-amount-key="3">3</button>
+          <button type="button" data-amount-key="00">00</button>
+          <button class="zero-key" type="button" data-amount-key="0">0</button>
+        </div>
+      </div>
         <button class="primary-button reward-button" type="submit">使い道を記録</button>
       </form>
     </section>

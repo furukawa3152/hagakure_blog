@@ -131,8 +131,7 @@ html, body {
     gap: -10px;
 }
 
-.header_wave .wave-box,
-.footer_wave .wave-box
+.header_wave .wave-box
 {
     width: 170px;
     height: 180px;
@@ -155,19 +154,23 @@ html, body {
     border-radius: 15px 15px 0px 0px;
     position: relative;
     padding: 0;
+    background-color: #4FB7DB;
+    overflow: visible;
 }
 
 .footer_inner {
     width: 100%;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    height: 130px;
-    padding: 0 60px;
+    justify-content: flex-end;
+    height: 140px;
+    padding: 0 40px 40px;
     box-sizing: border-box;
     position: relative;
     z-index: 1;
 }
+
 /* 波線のスタイル */
 .footer_wave {
     width: 100%;
@@ -176,8 +179,9 @@ html, body {
     position: absolute;
     bottom: -30px;
     left: 0;
-    z-index: -1;
+    z-index: 0;
     gap: -10px;
+    pointer-events: none;
 }
 
 .footer_wave .wave-box {
@@ -188,15 +192,54 @@ html, body {
     margin-left: -10px;
 }
 
+.footer_content {
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    column-gap: 16px;
+    position: relative;
+    z-index: 1;
+}
+
 .guidelines_links {
+    grid-column: 2;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    margin: 0 auto 24px;
+    margin: 0;
     position: relative;
-    height: 100px;
+    height: auto;
     gap: 90px;
+}
+
+.footer_hagakure_link {
+    grid-column: 3;
+    justify-self: end;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 260px;
+    text-decoration: none;
+    color: #FFFFFF;
+}
+
+.footer_hagakure_link:hover .footer_hagakure_link__text {
+    text-decoration: underline;
+}
+
+.footer_hagakure_link__samurai {
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.footer_hagakure_link__text {
+    font-family: "Zen Maru Gothic", sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    line-height: 1.35;
 }
 
 .guidelines_link {
@@ -222,19 +265,29 @@ html, body {
 
 .footer_copyright {
     text-align: center;
-    width: max-content;
     font-size: 14px;
     color: #FFFFFF;
-    position: absolute; /* 絶対配置で下に固定 */
-    bottom: 10px;
+    position: absolute;
+    bottom: 8px;
     left: 50%;
     transform: translateX(-50%);
     width: 100%;
+    z-index: 1;
 }
 
 .create-button img,
 .login-button img {
     display: none;
+}
+
+@media (max-width: 900px) {
+    .footer_hagakure_link {
+        max-width: 180px;
+    }
+
+    .footer_hagakure_link__text {
+        font-size: 0.7rem;
+    }
 }
 
 @media (max-width: 768px){
@@ -249,8 +302,7 @@ html, body {
     width: 140px;
     }
 
-    .header_wave .wave-box,
-    .footer_wave .wave-box
+    .header_wave .wave-box
     {
     height: 110px;
     }
@@ -289,26 +341,60 @@ html, body {
     }
 
     .footer_inner{
-    flex-direction:column;
-    align-items: center;
-    height: auto;
-    padding: 20px;
-    gap: 10px;
+        height: auto;
+        min-height: 170px;
+        padding: 28px 16px 24px;
+        justify-content: center;
+        gap: 14px;
+    }
+
+    .footer_content {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        row-gap: 12px;
     }
 
     .footer_links {
-    flex-direction: column;
-    gap: 10px;
+        flex-direction: column;
+        gap: 10px;
     }
 
     .footer_wave .wave-box {
-    width: 80px;
-    height: 180px;
-    border-radius: 40px 40px 0 0;
+        width: 80px;
+        height: 210px;
+        border-radius: 40px 40px 0 0;
+    }
+
+    .guidelines_links {
+        grid-column: 1;
+        height: auto;
+        margin: 0;
+    }
+
+    .guidelines_link {
+        font-size: 16px;
+    }
+
+    .footer_hagakure_link {
+        grid-column: 1;
+        justify-self: center;
+        max-width: 260px;
+    }
+
+    .footer_hagakure_link__samurai {
+        width: 48px;
+        height: 48px;
+    }
+
+    .footer_hagakure_link__text {
+        font-size: 0.75rem;
+        text-align: left;
     }
 
     .footer_copyright {
-    font-size: 8px;
-    bottom: 5px;
+        font-size: 8px;
+        position: static;
+        transform: none;
+        margin-top: 2px;
     }
 }

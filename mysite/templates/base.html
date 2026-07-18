@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}HAGAKUREプログラミング塾|Scroll{% endblock %}</title>
   {% block extra_head %}{% endblock %}
-  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}?v=20260719b">
     <!-- Googleフォントを使用 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -53,8 +53,15 @@
         {% endfor %}
       </div>
 
-      <div class="guidelines_links">
-        <a href="{% url 'blog_guidelines' %}" class="guidelines_link">Scroll ガイドライン</a>
+      <div class="footer_content">
+        <div class="guidelines_links">
+          <a href="{% url 'blog_guidelines' %}" class="guidelines_link">Scroll ガイドライン</a>
+        </div>
+
+        <a class="footer_hagakure_link" href="/" aria-label="HAGAKURE PROGRAMMING塾のWebサイトはこちらでござる">
+          <img class="footer_hagakure_link__samurai" src="{% static 'images/blog_page/samurai.png' %}" alt="" width="56" height="56">
+          <span class="footer_hagakure_link__text">HAGAKURE PROGRAMMING塾のWebサイトはこちらでござる</span>
+        </a>
       </div>
 
       <div class="footer_copyright">

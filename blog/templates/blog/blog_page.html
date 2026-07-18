@@ -60,7 +60,9 @@
                 {% endif %}
               {% endif %}
               </div>
-              <p class="user-name">{{ page.owner.get_full_name|default:page.owner.username }}</p>
+              {% if page.owner %}
+              <p class="user-name">{% firstof page.owner.get_full_name page.owner.username %}</p>
+              {% endif %}
             </div>
           </div>
 
@@ -104,7 +106,9 @@
                 <img src="{% static 'images/blog_index_page/user_img.png' %}" alt="デフォルトアイコン">
               {% endif %}
             {% endif %}
-            <p class="user-name">{{ page.owner.get_full_name|default:page.owner.username }}</p>
+            {% if page.owner %}
+            <p class="user-name">{% firstof page.owner.get_full_name page.owner.username %}</p>
+            {% endif %}
             <!--<p class="self-introduction">{{ page.owner.profile.introduction|default:"ひとこと自己紹介" }}</p>-->
           </div>
         </div>

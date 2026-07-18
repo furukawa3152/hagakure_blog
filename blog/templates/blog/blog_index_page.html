@@ -45,7 +45,9 @@
                 <img src="{% static 'images/blog_index_page/user_img.png' %}" alt="デフォルトアイコン">
               {% endif %}
             {% endif %}
-            <p>{{ article.owner.get_full_name|default:article.owner.username }}</p>
+            {% if article.owner %}
+            <p>{% firstof article.owner.get_full_name article.owner.username %}</p>
+            {% endif %}
           </div>
           <div class="article_other">
             <div class="article_like">

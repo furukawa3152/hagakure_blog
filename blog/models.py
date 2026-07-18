@@ -135,9 +135,9 @@ class BlogPage(Page):
         super().clean()
 
         # タイトル文字数制限
-        if len(self.title) > 26:
+        if len(self.title) > 39:
             raise ValidationError({
-                'title': 'タイトルは26文字以内で入力してください'
+                'title': 'タイトルは39文字以内で入力してください'
             })
 
     # サムネイル

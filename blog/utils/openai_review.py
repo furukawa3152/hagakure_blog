@@ -101,7 +101,7 @@ def review_blog_content(content: str) -> str:
             },  # system
             {"role": "user", "content": prompt},
         ],
-        max_completion_tokens=1200,
+        max_completion_tokens=2000,
         temperature=0.5,
     )
     return response.choices[0].message.content

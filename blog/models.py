@@ -118,6 +118,16 @@ class BlogIndexPage(Page):
             blogpages_page = paginator.page(paginator.num_pages)
 
         context['blogpages'] = blogpages_page
+        if paginator.num_pages <= 5:
+            context['pagination_range'] = list(paginator.page_range)
+        else:
+            context['pagination_range'] = list(
+                paginator.get_elided_page_range(
+                    blogpages_page.number,
+                    on_each_side=1,
+                    on_ends=1,
+                )
+            )
         return context
 
     # 親ページ子ページの制限

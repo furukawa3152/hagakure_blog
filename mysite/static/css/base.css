@@ -10,9 +10,11 @@
 
 html, body {
     width: 100%;
+    max-width: 100%;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    overflow-x: hidden;
 }
 
 /* ヘッダー内部のスタイル */
@@ -125,19 +127,21 @@ html, body {
     display: flex;
     justify-content: center;
     position: absolute;
-    bottom: -30;
+    bottom: 0;
     left: 0;
     z-index: -1;
-    gap: -10px;
+    transform: translateY(50%);
+    pointer-events: none;
 }
 
 .header_wave .wave-box
 {
-    width: 170px;
-    height: 180px;
+    flex: 1 1 0;
+    width: 0;
+    min-width: 0;
+    height: 96px;
     background-color: #6AC15D;
-    border-radius: 0 0 65px 65px; /* 下2つの角を丸くする */
-    margin-left: -10px;
+    border-radius: 0 0 48px 48px; /* 下2つの角を丸くする */
 }
 
 html, body {
@@ -146,6 +150,9 @@ html, body {
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 .footer {
@@ -171,25 +178,26 @@ html, body {
     z-index: 1;
 }
 
-/* 波線のスタイル */
+/* 波線のスタイル（上方向に青い波が出る演出） */
 .footer_wave {
     width: 100%;
     display: flex;
     justify-content: center;
     position: absolute;
-    bottom: -30px;
+    top: 0;
     left: 0;
     z-index: 0;
-    gap: -10px;
+    transform: translateY(-50%);
     pointer-events: none;
 }
 
 .footer_wave .wave-box {
-    width: 170px;
-    height: 180px;
+    flex: 1 1 0;
+    width: 0;
+    min-width: 0;
+    height: 96px;
     background-color: #4FB7DB;
-    border-radius: 65px 65px 0px 0px; /* 上2つの角を丸くする */
-    margin-left: -10px;
+    border-radius: 48px 48px 0 0; /* 上2つの角を丸くする */
 }
 
 .footer_content {
@@ -304,7 +312,8 @@ html, body {
 
     .header_wave .wave-box
     {
-    height: 110px;
+    height: 64px;
+    border-radius: 0 0 32px 32px;
     }
 
     .search-bar, .create-button, .login-button {
@@ -360,9 +369,8 @@ html, body {
     }
 
     .footer_wave .wave-box {
-        width: 80px;
-        height: 210px;
-        border-radius: 40px 40px 0 0;
+        height: 64px;
+        border-radius: 32px 32px 0 0;
     }
 
     .guidelines_links {

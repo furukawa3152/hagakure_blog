@@ -2014,6 +2014,7 @@ html { font-size:80%}
 /*----- 入塾の流れ -----*/
 .nyujuku {
     padding-top: 20px;
+    padding-bottom: 80px;
     background-color: #fff;
 }
 .container_nyujuku {

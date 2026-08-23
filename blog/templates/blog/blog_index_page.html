@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="{% static 'css/blog_index_page.css' %}">
+<link rel="stylesheet" href="{% static 'css/blog_index_page.css' %}?v=20260823">
   <div class="container">
     <div class="summary">
       <h2>Scrollは、HAGAKUREプログラミング塾の参加者が運営するブログサイトです。</h2>
@@ -75,10 +75,12 @@
     </div>
       <div class="page">
         {% if blogpages.has_previous %}
-          <a class="page-prev" href="?page={{ blogpages.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}">前のページへ</a>
+          <a class="page-prev" href="?page={{ blogpages.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}">前へ</a>
         {% endif %}
-        {% for i in blogpages.paginator.page_range %}
-          {% if blogpages.number == i %}
+        {% for i in pagination_range %}
+          {% if i == "…" %}
+            <span class="page-ellipsis" aria-hidden="true">…</span>
+          {% elif blogpages.number == i %}
             <span class="current">{{ i }}</span>
           {% else %}
             <a class="page-number" href="?page={{ i }}{% if search_query %}&q={{ search_query }}{% endif %}">{{ i }}</a>
@@ -86,7 +88,7 @@
         {% endfor %}
 
         {% if blogpages.has_next %}
-          <a class="page-next" href="?page={{ blogpages.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}">次のページへ</a>
+          <a class="page-next" href="?page={{ blogpages.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}">次へ</a>
         {% endif %}
       </div>
   </div>

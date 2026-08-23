@@ -13,7 +13,9 @@
     <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'images/blog_page/article_no_img.png' %}" />
 {% endif %}
 <meta property="og:site_name" content="HAGAKUREのブログサイト Scroll" />
-<meta property="og:description" content="{{ page.body|striptags|truncatechars_html:120|truncatewords:15 }}" />
+{% firstof page.search_description page.body|striptags|truncatechars_html:120|truncatewords:15 as meta_description %}
+<meta name="description" content="{{ meta_description }}" />
+<meta property="og:description" content="{{ meta_description }}" />
 <meta name="twitter:card" content="summary_large_image" />
 {% endblock %}
 

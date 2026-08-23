@@ -1,5 +1,6 @@
 import gspread
 import os
+import re
 import openai
 from google.oauth2.service_account import Credentials
 from pathlib import Path
@@ -14,7 +15,8 @@ def generate_hagakure_summary(content):
     prompt = f"以下のブログ記事の内容を、超簡潔に一言（30文字以内）で説明してください。\n\n{content[:1000]}"  # 最初の1000文字のみ使用
     
     response = openai.chat.completions.create(
-        model="gpt-4o-mini",
+        model="gpt-5.6-luna",
+        reasoning_effort="none",
         messages=[
             {"role": "system", "content": """ 
 あなたは「HAGAKURE君」という侍キャラクターです。
@@ -30,10 +32,14 @@ def generate_hagakure_summary(content):
          """},
             {"role": "user", "content": prompt}
         ],
-        max_tokens=100,
-        temperature=0.7,
+        max_completion_tokens=100,
     )
-    return response.choices[0].message.content.strip()
+    summary = response.choices[0].message.content
+    if not summary:
+        raise RuntimeError(
+            f"要約が空で返却されました (finish_reason={response.choices[0].finish_reason})"
+        )
+    return summary.strip()
 
 
 def _format_tags_for_x(tags):
@@ -43,7 +49,19 @@ def _format_tags_for_x(tags):
     return " " + " ".join("#" + str(t).replace(" ", "") for t in tags if t)
 
 
-def log_to_sheet(author_name, post_title, content, post_url, tags=None):
+def build_sheet_summary(summary, tags=None):
+    """シートC列用：要約＋X投稿用ハッシュタグ"""
+    if tags:
+        return summary + _format_tags_for_x(tags)
+    return summary
+
+
+def summary_for_description(text):
+    """シート用要約からハッシュタグ部分だけ機械的に除去して description に使う"""
+    return re.sub(r"\s#\S+", "", text).strip()
+
+
+def log_to_sheet(author_name, post_title, content, post_url, tags=None, summary=None):
     """
     log_for_xシートにブログ投稿をログ記録
     
@@ -53,6 +71,7 @@ def log_to_sheet(author_name, post_title, content, post_url, tags=None):
         content: ブログ本文
         post_url: ブログのURL
         tags: ブログに付与されたタグ名のリスト（省略時は要約のみ、X用ハッシュタグは付与しない）
+        summary: 事前生成済みの要約（省略時はここで生成）
     
     Returns:
         bool: 記録に成功したか（重複の場合はFalse）
@@ -84,17 +103,16 @@ def log_to_sheet(author_name, post_title, content, post_url, tags=None):
                     print(f"重複：{author_name} - {post_title} はすでに記録されています")
                     return False
         
-        # 重複がない場合、HAGAKURE君の一言を生成
-        summary = generate_hagakure_summary(content)
-        # 要約の最後にX投稿用のハッシュタグをスペース区切りで付与
-        if tags:
-            summary = summary + _format_tags_for_x(tags)
+        # 重複がない場合、HAGAKURE君の一言を生成（未指定時）
+        if summary is None:
+            summary = generate_hagakure_summary(content)
+        sheet_summary = build_sheet_summary(summary, tags)
         
         # 現在日時を取得
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
         # 新しい行を追加（A:投稿者, B:タイトル, C:一言, D:URL, E:日時）
-        new_row = [author_name, post_title, summary, post_url, timestamp]
+        new_row = [author_name, post_title, sheet_summary, post_url, timestamp]
         worksheet.append_row(new_row)
         
         print(f"ログ記録成功：{author_name} - {post_title}")

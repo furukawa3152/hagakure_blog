@@ -31,7 +31,8 @@ def review_blog_content(content: str) -> str:
         f"{content}"
     )
     response = openai.chat.completions.create(
-        model="gpt-4.1-mini",
+        model="gpt-5.6-luna",
+        reasoning_effort="none",
         messages=[
             {
                 "role": "system",
@@ -101,7 +102,12 @@ def review_blog_content(content: str) -> str:
             },  # system
             {"role": "user", "content": prompt},
         ],
-        max_completion_tokens=2000,
-        temperature=0.5,
+        max_completion_tokens=4000,
     )
-    return response.choices[0].message.content
+    review = response.choices[0].message.content
+    if not review:
+        logger.error(
+            "AIレビューが空で返却されました (finish_reason=%s)",
+            response.choices[0].finish_reason,
+        )
+    return review or ""

@@ -3,7 +3,12 @@ from django.dispatch import receiver
 from blog.models import BlogPage
 from blog.utils.slack import send_slack_notification
 from blog.utils.openai_review import review_blog_content
-from blog.utils.sheet_logger import log_to_sheet
+from blog.utils.sheet_logger import (
+    build_sheet_summary,
+    generate_hagakure_summary,
+    log_to_sheet,
+    summary_for_description,
+)
 
 @receiver(page_published)
 def notify_slack_on_publish(sender, instance, **kwargs):
@@ -17,9 +22,22 @@ def notify_slack_on_publish(sender, instance, **kwargs):
         if hasattr(instance, "owner") and instance.owner:
             author_name = instance.owner.get_full_name() or instance.owner.username
 
-        # スプレッドシートにログ記録（重複チェックあり）。要約末尾にブログタグを#付きで付与
+        # 要約を1回生成し、シート記録と description に使い回す
         tag_names = [t.name for t in instance.tags.all()]
-        log_to_sheet(author_name, instance.title, content, instance.full_url, tags=tag_names)
+        try:
+            summary = generate_hagakure_summary(content)
+            log_to_sheet(
+                author_name,
+                instance.title,
+                content,
+                instance.full_url,
+                tags=tag_names,
+                summary=summary,
+            )
+            description = summary_for_description(build_sheet_summary(summary, tag_names))
+            BlogPage.objects.filter(pk=instance.pk).update(search_description=description)
+        except Exception as e:
+            print(f"要約・シート記録エラー: {e}")
 
         # AIレビュー & Slack通知
         review = review_blog_content(content)

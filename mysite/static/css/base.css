@@ -1,9 +1,12 @@
-/* ヘッダー全体のスタイル */
+/* ヘッダー全体のスタイル（スクロール時も上部固定） */
 .header {
     width: 100%;
     background-color: #6AC15D;;
     border-radius: 0 0 15px 15px;
-    position: relative;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
     padding: 0;
     margin: 0;
 }
@@ -155,6 +158,12 @@ html, body {
     overflow-x: hidden;
 }
 
+/* 固定ヘッダー分の余白（header_inner 高さに合わせる） */
+main {
+    padding-top: 100px;
+    flex: 1 0 auto;
+}
+
 .footer {
     margin-top: auto;
     width: 100%;
@@ -288,6 +297,25 @@ html, body {
     display: none;
 }
 
+/* 参加フォームボタン（LPと同画像・常時表示） */
+.blog-form-button {
+    position: fixed;
+    bottom: 30px;
+    right: 20px;
+    z-index: 1001;
+    opacity: 0.85;
+}
+
+.blog-form-button img {
+    width: 120px;
+    height: auto;
+    display: block;
+}
+
+.blog-form-button a {
+    display: block;
+}
+
 @media (max-width: 900px) {
     .footer_hagakure_link {
         max-width: 180px;
@@ -299,6 +327,10 @@ html, body {
 }
 
 @media (max-width: 768px){
+    main {
+        padding-top: 90px;
+    }
+
     .header_inner{
     flex-direction:row;
     height:auto;
@@ -308,6 +340,15 @@ html, body {
 
     .logo{
     width: 140px;
+    }
+
+    .blog-form-button {
+        bottom: 20px;
+        right: 12px;
+    }
+
+    .blog-form-button img {
+        width: 96px;
     }
 
     .header_wave .wave-box

@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}HAGAKUREプログラミング塾|Scroll{% endblock %}</title>
   {% block extra_head %}{% endblock %}
-  <link rel="stylesheet" href="{% static 'css/base.css' %}?v=20260823">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}?v=20260920">
     <!-- Googleフォントを使用 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,19 +14,22 @@
   rel="stylesheet">
   <link rel="icon" href="{% static 'images/favicon.ico' %}">
 
+  {# 管理画面・プレビューでは本番GA4を送らない（/admin/.../preview/ の混入防止） #}
+  {% if request and "/admin/" not in request.path and "/django-admin/" not in request.path %}
   <!-- Google Analytics 4 -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-PQMQ82P18K"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PQMQ82P18K"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
 
-  function gtag() {
-    dataLayer.push(arguments);
-  }
+    function gtag() {
+      dataLayer.push(arguments);
+    }
 
-  gtag('js', new Date());
-  gtag('config', 'G-PQMQ82P18K');
-</script>
-<!-- End Google Analytics 4 -->
+    gtag('js', new Date());
+    gtag('config', 'G-PQMQ82P18K');
+  </script>
+  <!-- End Google Analytics 4 -->
+  {% endif %}
 
 </head>
 <body>
@@ -39,10 +42,17 @@
       </a> 
 
       <div class="header-buttons">
+        {% if request.user.is_authenticated %}
         <a href="https://hagakurepgm.net/accounts/google/login/" class="login-button">
           <span class="button-text">記事を書く</span>
           <img src="{% static 'image/base/create_icon.png' %}" alt="記事作成">
         </a>
+        {% else %}
+        <a href="https://hagakurepgm.net/accounts/google/login/" class="login-button">
+          <span class="button-text">ログイン</span>
+          <img src="{% static 'image/base/login_icon.png' %}" alt="ログイン">
+        </a>
+        {% endif %}
       </div>
 
       <div class="header_wave">
@@ -85,6 +95,15 @@
 
     </div>
   </footer>
+
+  {# LPと同じ参加フォームボタン。ブログでは常時表示 #}
+  {% if request and "/admin/" not in request.path and "/django-admin/" not in request.path %}
+  <div class="blog-form-button">
+    <a href="https://forms.gle/N8ipEt2RFSs8bt4a9">
+      <img src="{% static 'images/form_button.png' %}" alt="参加はこちら">
+    </a>
+  </div>
+  {% endif %}
 
 </body>
 </html>

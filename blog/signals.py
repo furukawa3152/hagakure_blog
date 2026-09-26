@@ -10,6 +10,21 @@ from blog.utils.sheet_logger import (
     summary_for_description,
 )
 
+
+def published_page_url(page):
+    """本番ドメインの公開URLを https にする。
+
+    Wagtail はサイトのポートが 80 だと full_url を http で組み立てる。
+    公開シグナルにはリクエストがないため、外向きの https はここでは分からない。
+    """
+    url = page.full_url or ""
+    for host in ("hagakurepgm.net", "www.hagakurepgm.net"):
+        prefix = f"http://{host}"
+        if url.startswith(prefix):
+            return "https://" + url[len("http://") :]
+    return url
+
+
 @receiver(page_published)
 def notify_slack_on_publish(sender, instance, **kwargs):
     # 公開時にSlack通知・AIレビュー・スプレッドシート記録をまとめて実行
@@ -30,7 +45,7 @@ def notify_slack_on_publish(sender, instance, **kwargs):
                 author_name,
                 instance.title,
                 content,
-                instance.full_url,
+                published_page_url(instance),
                 tags=tag_names,
                 summary=summary,
             )
@@ -44,7 +59,7 @@ def notify_slack_on_publish(sender, instance, **kwargs):
         text = (
             f"Scrollに新しい記事が公開されたでござる！\n"
             f"タイトル: {instance.title}\n"
-            f"URL: {instance.full_url}\n\n"
+            f"URL: {published_page_url(instance)}\n\n"
             f"拙者がレビューした内容でござる。\n{review}"
         )
         send_slack_notification(text)

@@ -2,10 +2,13 @@
 {% load static wagtailcore_tags %}
 {% load wagtailimages_tags %}
 
+{% block title %}{{ page.title }} | HAGAKUREプログラミング塾{% endblock %}
+
 {% block extra_head %}
+<link rel="canonical" href="{{ page.full_url }}" />
 <meta property="og:title" content="{{ page.title }}" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="{{ request.build_absolute_uri }}" />
+<meta property="og:url" content="{{ page.full_url }}" />
 {% if page.thumbnail %}
     {% image page.thumbnail original as thumbnail %}
     <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ thumbnail.url }}" />

@@ -4,12 +4,13 @@ import logging
 from django.contrib.auth.decorators import login_required
 from django.db.models import F
 from django.db.models.functions import Least
-from django.http import JsonResponse
+from django.http import HttpResponseBadRequest, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_http_methods, require_POST
 
+from blog.forms import CommentForm
 from blog.utils.openai_review import review_blog_content
-from .models import BlogPage, Like
+from .models import BlogPage, Comment, Like
 
 logger = logging.getLogger(__name__)
 
@@ -44,6 +45,23 @@ def like_blogpage(request, page_id):
     )
 
     return JsonResponse({'likes': blogpage.get_like_count()})
+
+
+@login_required
+@require_POST
+def comment_blogpage(request, page_id):
+    blogpage = get_object_or_404(BlogPage.objects.live().public(), id=page_id)
+    form = CommentForm(request.POST)
+    if not form.is_valid():
+        return HttpResponseBadRequest("コメントを入力してください（2000文字以内）")
+
+    Comment.objects.create(
+        blogpage=blogpage,
+        user=request.user,
+        body=form.cleaned_data["body"],
+    )
+    page_url = blogpage.get_url(request=request) or "/"
+    return HttpResponseRedirect(f"{page_url}#comments")
 
 
 @login_required

@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="{% static 'css/blog_index_page.css' %}?v=20260823">
+<link rel="stylesheet" href="{% static 'css/blog_index_page.css' %}?v=20261018-2">
   <div class="container">
     <div class="summary">
       <h2>Scrollは、HAGAKUREプログラミング塾の参加者が運営するブログサイトです。</h2>
@@ -50,6 +50,7 @@
             {% endif %}
           </div>
           <div class="article_other">
+            <div class="article_reactions">
             <div class="article_like">
               {% csrf_token %}
               <button class="likeButton" data-page-id="{{ article.id }}">
@@ -60,6 +61,13 @@
                 </svg>
               </button>
               <span id="likeCount">{{ article.get_like_count }}</span>
+            </div>
+            <a class="article_comment" href="{{ article.url }}#comments" aria-label="コメント{{ article.comment_count }}件">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M7 8.5C7 7.119 8.119 6 9.5 6H22.5C23.881 6 25 7.119 25 8.5V18.5C25 19.881 23.881 21 22.5 21H14.4L9.7 25.1C9.1 25.62 8.2 25.18 8.2 24.4V21H9.5C8.119 21 7 19.881 7 18.5V8.5Z" stroke="#625651" stroke-width="1.6" stroke-linejoin="round"/>
+              </svg>
+              <span class="article_comment__count">{{ article.comment_count }}</span>
+            </a>
             </div>
             <div class="article_category">
               <ul>

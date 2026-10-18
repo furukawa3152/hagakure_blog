@@ -1,7 +1,8 @@
+from django import forms
 from django.core.exceptions import ValidationError
 from wagtail.admin.forms import WagtailAdminPageForm
 
-from .models import BlogPage
+from .models import BlogPage, Comment
 
 
 def count_chars(value: str) -> int:
@@ -43,3 +44,15 @@ class BlogPageForm(WagtailAdminPageForm):
                 )
 
         return tags
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ("body",)
+
+    def clean_body(self):
+        body = self.cleaned_data["body"].strip()
+        if not body:
+            raise ValidationError("コメントを入力してください")
+        return body

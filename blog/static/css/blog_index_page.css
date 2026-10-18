@@ -167,6 +167,25 @@ body {
   width: 40px;
   height: 40px;
 }
+.article_reactions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-shrink: 0;
+}
+.article_comment {
+  display: flex;
+  align-items: center;
+}
+.article_comment svg {
+  width: 32px;
+  height: 32px;
+  margin: 0 4px;
+  display: block;
+}
+.article_comment__count {
+  line-height: 1;
+}
 
 /* 記事_カテゴリー設定 */
 .article_category > ul {

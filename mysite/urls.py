@@ -33,6 +33,7 @@ urlpatterns = [
     path("admin/", include(wagtailadmin_urls)),
     path("search/", search_views.search, name="search"),
     path('like/<int:page_id>/', views.like_blogpage, name='like_blogpage'),
+    path('comment/<int:page_id>/', views.comment_blogpage, name='comment_blogpage'),
     path("accounts/", include("allauth.urls")),  # GoogleログインURLを追加
     
     

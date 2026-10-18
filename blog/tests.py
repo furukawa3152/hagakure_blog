@@ -3,14 +3,15 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group, Permission
 from django.core.exceptions import PermissionDenied
 from django.db import IntegrityError
-from django.test import RequestFactory, TestCase
-from wagtail.models import Page
+from django.test import override_settings, RequestFactory, TestCase
+from wagtail.models import Page, Site
 from unittest import mock
 import importlib
 import uuid
+from zoneinfo import ZoneInfo
 
 from blog.forms import BlogPageForm
-from blog.models import BlogIndexPage, BlogPage, Like
+from blog.models import BlogIndexPage, BlogPage, Comment, Like
 from home.models import HomePage
 
 
@@ -111,6 +112,22 @@ class BlogPageModelTests(TestCase):
         self.assertIn(tagged, blogpages)
         self.assertNotIn(other, blogpages)
 
+    def test_index_context_counts_comments_without_tag_duplicates(self):
+        page = BlogPage(title="Commented", slug="commented", body=[])
+        self.index.add_child(instance=page)
+        page.tags.add("python", "pytest")
+        page.save_revision().publish()
+        user = get_user_model().objects.create_user(username="reader", password="x")
+        Comment.objects.create(blogpage=page, user=user, body="one")
+        Comment.objects.create(blogpage=page, user=user, body="two")
+
+        request = RequestFactory().get("/blog/", {"tag": "python", "q": "py"})
+        context = self.index.get_context(request)
+
+        listed = list(context["blogpages"].object_list)
+        self.assertEqual([item.pk for item in listed], [page.pk])
+        self.assertEqual(listed[0].comment_count, 2)
+
     def test_like_unique_per_ip(self):
         page = self._create_live_blog_page()
 
@@ -152,6 +169,136 @@ class BlogPageModelTests(TestCase):
         self.assertEqual(
             Like.objects.get(blogpage=page, ip_address="127.0.0.9").count,
             999,
+        )
+
+
+class CommentTests(TestCase):
+    def setUp(self):
+        self._signal_patchers = [
+            mock.patch("blog.signals.generate_hagakure_summary", return_value="要約でござる"),
+            mock.patch("blog.signals.review_blog_content", return_value=""),
+            mock.patch("blog.signals.log_to_sheet", return_value=True),
+            mock.patch("blog.signals.send_slack_notification", return_value=None),
+        ]
+        for patcher in self._signal_patchers:
+            patcher.start()
+            self.addCleanup(patcher.stop)
+
+        root = Page.get_first_root_node()
+        home = HomePage(title="Home", slug=f"home-{uuid.uuid4().hex[:8]}")
+        root.add_child(instance=home)
+        home.save_revision().publish()
+        site = Site.objects.filter(is_default_site=True).first()
+        if site:
+            site.hostname = "testserver"
+            site.port = 80
+            site.root_page = home
+            site.save()
+        else:
+            Site.objects.create(
+                hostname="testserver",
+                port=80,
+                root_page=home,
+                is_default_site=True,
+            )
+
+        index = BlogIndexPage(title="Blog", slug=f"blog-{uuid.uuid4().hex[:8]}")
+        home.add_child(instance=index)
+        index.save_revision().publish()
+
+        self.page = BlogPage(title="Comments", slug="comments", body=[])
+        index.add_child(instance=self.page)
+        self.page.save_revision().publish()
+
+        self.user = get_user_model().objects.create_user(
+            username="commenter",
+            password="password",
+        )
+
+    def test_login_is_required_to_post(self):
+        response = self.client.post(
+            f"/comment/{self.page.id}/",
+            {"body": "コメント"},
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(Comment.objects.exists())
+
+    def test_logged_in_user_can_post(self):
+        self.client.force_login(self.user)
+
+        response = self.client.post(
+            f"/comment/{self.page.id}/",
+            {"body": "  分かりやすい記事でした  "},
+        )
+
+        self.assertRedirects(
+            response,
+            f"{self.page.url}#comments",
+            fetch_redirect_response=False,
+        )
+        comment = Comment.objects.get()
+        self.assertEqual(comment.user, self.user)
+        self.assertEqual(comment.body, "分かりやすい記事でした")
+
+    def test_comment_accepts_2000_characters(self):
+        self.client.force_login(self.user)
+
+        response = self.client.post(
+            f"/comment/{self.page.id}/",
+            {"body": "あ" * 2000},
+        )
+
+        self.assertRedirects(
+            response,
+            f"{self.page.url}#comments",
+            fetch_redirect_response=False,
+        )
+        self.assertEqual(Comment.objects.get().body, "あ" * 2000)
+
+    def test_comment_rejects_more_than_2000_characters(self):
+        self.client.force_login(self.user)
+
+        response = self.client.post(
+            f"/comment/{self.page.id}/",
+            {"body": "あ" * 2001},
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.assertFalse(Comment.objects.exists())
+
+    @override_settings(
+        STORAGES={
+            "default": {
+                "BACKEND": "django.core.files.storage.FileSystemStorage",
+            },
+            "staticfiles": {
+                "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+            },
+        }
+    )
+    def test_public_page_shows_expand_button_and_escapes_comments(self):
+        for number in range(4):
+            Comment.objects.create(
+                blogpage=self.page,
+                user=self.user,
+                body=f"<script>{number}</script>",
+            )
+
+        response = self.client.get(self.page.url)
+        html = response.content.decode()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("data-comment-more", html)
+        self.assertIn("comment-card--extra", html)
+        self.assertNotIn("<script>0</script>", html)
+        self.assertIn("&lt;script&gt;0&lt;/script&gt;", html)
+        posted_at = Comment.objects.latest("created_at").created_at.astimezone(
+            ZoneInfo("Asia/Tokyo")
+        )
+        self.assertIn(
+            f"{posted_at.year}/{posted_at.month}/{posted_at.day} {posted_at:%H:%M}",
+            html,
         )
 
 

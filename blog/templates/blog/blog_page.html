@@ -1,11 +1,14 @@
 {% extends "base.html" %}
-{% load static wagtailcore_tags %}
+{% load static tz wagtailcore_tags %}
 {% load wagtailimages_tags %}
 
+{% block title %}{{ page.title }} | HAGAKUREプログラミング塾{% endblock %}
+
 {% block extra_head %}
+<link rel="canonical" href="{{ page.full_url }}" />
 <meta property="og:title" content="{{ page.title }}" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="{{ request.build_absolute_uri }}" />
+<meta property="og:url" content="{{ page.full_url }}" />
 {% if page.thumbnail %}
     {% image page.thumbnail original as thumbnail %}
     <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ thumbnail.url }}" />
@@ -113,6 +116,88 @@
             {% endif %}
             <!--<p class="self-introduction">{{ page.owner.profile.introduction|default:"ひとこと自己紹介" }}</p>-->
           </div>
+
+          <section class="comment-section" id="comments" aria-labelledby="comments-title">
+            <div class="comment-section__inner">
+              <h2 id="comments-title" class="comment-section__title">コメント</h2>
+
+              <div class="comment-composer">
+                <svg class="comment-paper-filter" aria-hidden="true">
+                  <filter id="comment-torn-paper" x="-8%" y="-14%" width="116%" height="128%">
+                    <feTurbulence
+                      type="fractalNoise"
+                      baseFrequency="0.018 0.11"
+                      numOctaves="3"
+                      seed="12"
+                      result="paperNoise"
+                    />
+                    <feDisplacementMap
+                      in="SourceGraphic"
+                      in2="paperNoise"
+                      scale="10"
+                      xChannelSelector="R"
+                      yChannelSelector="G"
+                    />
+                  </filter>
+                </svg>
+                <img class="comment-composer__samurai" src="{% static 'images/blog_page/samurai.png' %}" alt="">
+                {% if request.user.is_authenticated %}
+                  <form method="post" action="{% url 'comment_blogpage' page.id %}" data-comment-form>
+                    {% csrf_token %}
+                    <textarea
+                      name="body"
+                      required
+                      aria-label="コメント"
+                      placeholder="ここにコメントを入力..."
+                    ></textarea>
+                    <button type="submit">送信する</button>
+                  </form>
+                {% else %}
+                  <div class="comment-login">
+                    <p>コメントを投稿するにはログインが必要です。<br>HAGAKURE PROGRAMMING塾の参加者のみログイン可能です。</p>
+                    <a href="/accounts/google/login/?next={{ page.url|urlencode }}">ログイン</a>
+                  </div>
+                {% endif %}
+              </div>
+
+              {% with comments=page.comments.all %}
+                <div class="comment-list">
+                  {% for comment in comments %}
+                    <article class="comment-card{% if forloop.counter > 3 %} comment-card--extra{% endif %}">
+                      {% if comment.user.wagtail_userprofile.avatar %}
+                        <img class="comment-card__avatar" src="{{ comment.user.wagtail_userprofile.avatar.url }}" alt="">
+                      {% else %}
+                        <img class="comment-card__avatar" src="{% static 'images/blog_index_page/user_img.png' %}" alt="">
+                      {% endif %}
+                      <div class="comment-card__content">
+                        <p class="comment-card__name">{% firstof comment.user.get_full_name comment.user.username %}</p>
+                        {% with posted_at=comment.created_at|timezone:"Asia/Tokyo" %}
+                          <time class="comment-card__time" datetime="{{ posted_at|date:'c' }}">{{ posted_at|date:"Y/n/j H:i" }}</time>
+                        {% endwith %}
+                        <p class="comment-card__body">{{ comment.body|linebreaksbr }}</p>
+                      </div>
+                      <img
+                        class="comment-card__arrow"
+                        src="{% static 'images/blog_page/comment_arrow.png' %}"
+                        alt=""
+                      >
+                    </article>
+                  {% empty %}
+                    <p class="comment-list__empty">まだコメントはありません。</p>
+                  {% endfor %}
+                </div>
+
+                {% if comments|length > 3 %}
+                  <button
+                    class="comment-more"
+                    type="button"
+                    aria-expanded="false"
+                    data-comment-more
+                  >その他のコメントはこちら</button>
+                {% endif %}
+              {% endwith %}
+            </div>
+          </section>
         </div>
       </div>
     </div>
@@ -124,6 +209,41 @@
 </div>
 
 <script>
+(() => {
+  const form = document.querySelector('[data-comment-form]');
+  if (!form) return;
+
+  const body = form.querySelector('textarea[name="body"]');
+  const submitButton = form.querySelector('button[type="submit"]');
+  const message = '2000文字以上は入力できません';
+  const commentLength = () => Array.from(body.value).length;
+
+  submitButton.addEventListener('click', (event) => {
+    if (commentLength() <= 2000) return;
+    event.preventDefault();
+    window.alert(message);
+  });
+
+  form.addEventListener('submit', (event) => {
+    if (commentLength() <= 2000) return;
+    event.preventDefault();
+  });
+})();
+
+(() => {
+  const moreButton = document.querySelector('[data-comment-more]');
+  if (!moreButton) return;
+
+  moreButton.addEventListener('click', () => {
+    const isExpanded = moreButton.getAttribute('aria-expanded') === 'true';
+    document.querySelectorAll('.comment-card--extra').forEach((comment) => {
+      comment.classList.toggle('comment-card--visible', !isExpanded);
+    });
+    moreButton.setAttribute('aria-expanded', String(!isExpanded));
+    moreButton.textContent = isExpanded ? 'その他のコメントはこちら' : 'コメントを閉じる';
+  });
+})();
+
 (() => {
   const actions = document.querySelector('[data-like-actions]');
   if (!actions) return;

@@ -1,4 +1,5 @@
 from django import forms
+from django.conf import settings
 from django.db import models
 
 from modelcluster.fields import ParentalKey, ParentalManyToManyField
@@ -62,6 +63,31 @@ class Like(models.Model):
 # ------いいねボタンここまで
 
 
+class Comment(models.Model):
+    blogpage = models.ForeignKey(
+        'BlogPage',
+        verbose_name='ブログ記事',
+        on_delete=models.CASCADE,
+        related_name='comments',
+    )
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        verbose_name='投稿者',
+        on_delete=models.CASCADE,
+        related_name='blog_comments',
+    )
+    body = models.TextField(verbose_name='コメント', max_length=2000)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'コメント'
+        verbose_name_plural = 'コメント'
+
+    def __str__(self):
+        return f'{self.user}: {self.body[:30]}'
+
+
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 
@@ -104,7 +130,9 @@ class BlogIndexPage(Page):
         else:
             blogpages = BlogPage.objects.all()
 
-        blogpages = blogpages.live().order_by('-first_published_at')
+        blogpages = blogpages.live().annotate(
+            comment_count=models.Count('comments', distinct=True)
+        ).order_by('-first_published_at')
 
         # --- ページネーション（12件/ページ） ---
         paginator = Paginator(blogpages, 12)

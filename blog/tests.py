@@ -241,6 +241,21 @@ class CommentTests(TestCase):
         self.assertEqual(comment.user, self.user)
         self.assertEqual(comment.body, "分かりやすい記事でした")
 
+    def test_comment_accepts_emoji(self):
+        self.client.force_login(self.user)
+
+        response = self.client.post(
+            f"/comment/{self.page.id}/",
+            {"body": "うれしい😀"},
+        )
+
+        self.assertRedirects(
+            response,
+            f"{self.page.url}#comments",
+            fetch_redirect_response=False,
+        )
+        self.assertEqual(Comment.objects.get().body, "うれしい😀")
+
     def test_comment_accepts_2000_characters(self):
         self.client.force_login(self.user)
 
